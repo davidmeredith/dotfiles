@@ -1,0 +1,12 @@
+# Machine specific files shouldn't be committed to source control
+.zsh_machine
+
+# Backup vim files
+*~
+.*~
+
+# Vim swap files
+.*.swp
+.*.swo
+.swp
+.swo
