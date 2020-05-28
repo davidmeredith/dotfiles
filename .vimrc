@@ -34,6 +34,7 @@ Plug 'junegunn/goyo.vim'
 
 
 " Colour theme
+" https://github.com/lifepillar/vim-solarized8
 Plug 'lifepillar/vim-solarized8'
 
 call plug#end()
@@ -64,7 +65,6 @@ set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 set clipboard=unnamed
 set background=dark
-"colorscheme liquidcarbon
 colorscheme flattened_dark "https://github.com/romainl/flattened
 "colorscheme solarized8
 
