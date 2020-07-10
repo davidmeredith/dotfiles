@@ -37,7 +37,8 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+#zplug load --verbose
+zplug load
 ## end zplug ##
 
 
@@ -120,9 +121,10 @@ alias ls="ls -FG"
 # for latest/preferred according to the JVMs in the Java Preferences application:
 #export JAVA_HOME=$(/usr/libexec/java_home)
 # to manually specify:
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+#export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home
 
 # DM manual modifications to path, mvn, sass, macvim, vscode, ngrok
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
