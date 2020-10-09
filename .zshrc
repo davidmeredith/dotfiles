@@ -124,11 +124,12 @@ alias ls="ls -FG"
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home
+#export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home
 
 # DM manual modifications to path, mvn, sass, macvim, vscode, ngrok
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="$HOME/bin:/usr/local/bin:$PATH:/usr/local/apache-maven-3.5.2/bin:/Applications/Visual Studio Code.app/Contents    /Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
+#export PATH="$HOME/bin:/usr/local/bin:$PATH:/usr/local/apache-maven-3.5.2/bin:/Applications/Visual Studio Code.app/Contents    /Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
+export PATH="$HOME/bin:/usr/local/bin:$PATH:/Applications/Visual Studio Code.app/Contents    /Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
 
 # PostgressApp 
 PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}"
@@ -175,3 +176,7 @@ then
 fi
 
 
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/davidmeredith/.sdkman"
+[[ -s "/Users/davidmeredith/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/davidmeredith/.sdkman/bin/sdkman-init.sh"
