@@ -65,7 +65,7 @@ set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 set clipboard=unnamed
 set background=dark
-colorscheme flattened_dark "https://github.com/romainl/flattened
+"colorscheme flattened_dark "https://github.com/romainl/flattened
 "colorscheme solarized8
 
 
