@@ -1,6 +1,6 @@
 # Dave's dot files
 
-Thanks to Drew Silcock.
+Thanks to Drew Silcock and James Clark.
 
 Note that the repository contains submodules so must be cloned recursively.
 

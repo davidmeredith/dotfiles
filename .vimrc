@@ -68,6 +68,10 @@ set background=dark
 colorscheme flattened_dark "https://github.com/romainl/flattened
 "colorscheme solarized8
 
+set backup
+set backupdir=~/.vim-back
+set directory=~/.vim-back
+set writebackup
 
 " Vim 8+ default plugin manager
 " Any directory under ~/.vim/pack is considered a package. 

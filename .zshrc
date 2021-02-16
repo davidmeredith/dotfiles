@@ -11,7 +11,7 @@ fi
 ## begin zplug ##
 zplug "zplug/zplug"
 
-# Theme
+# Theme - https://denysdovhan.com/spaceship-prompt/
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 
 zplug "zsh-users/zsh-completions"   
@@ -160,7 +160,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=240
 # set vi keybindings
 bindkey -v
 
-# Ctrl+r for search backward - must precede 'bindkey -v'
+# Ctrl+r for search backward - must come after 'bindkey -v'
 # https://unix.stackexchange.com/questions/30168/how-to-enable-reverse-search-in-zsh
 bindkey '^R' history-incremental-search-backward
 
@@ -176,7 +176,10 @@ then
 fi
 
 
+# Fuzzy file search: https://github.com/junegunn/fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/davidmeredith/.sdkman"
 [[ -s "/Users/davidmeredith/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/davidmeredith/.sdkman/bin/sdkman-init.sh"
+
