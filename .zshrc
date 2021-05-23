@@ -27,6 +27,9 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "lib/completion", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
 
+# softmouth's vim zsh key bindings
+zplug "softmoth/zsh-vim-mode"
+
 # Pretty, minimal and fast ZSH prompt https://github.com/sindresorhus/pure
 #zplug mafredri/zsh-async, from:github
 #zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
@@ -41,6 +44,13 @@ fi
 zplug load
 ## end zplug ##
 
+# softmouth's vim zsh terminal cursor customisation
+MODE_CURSOR_VIINS="#00ff00 blinking bar"
+MODE_CURSOR_REPLACE="$MODE_CURSOR_VIINS #ff0000"
+MODE_CURSOR_VICMD="green block"
+MODE_CURSOR_SEARCH="#ff00ff steady underline"
+MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
+MODE_CURSOR_VLINE="$MODE_CURSOR_VISUAL #00ffff"
 
 SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
@@ -78,8 +88,8 @@ SPACESHIP_PROMPT_ORDER=(
   char          # Prompt character
 )
 # below spaceship default configs true
-SPACESHIP_PROMPT_ADD_NEWLINE=false
-SPACESHIP_PROMPT_SEPARATE_LINE=false
+SPACESHIP_PROMPT_ADD_NEWLINE=true
+SPACESHIP_PROMPT_SEPARATE_LINE=true
 
 
 # User configuration
@@ -91,13 +101,12 @@ export LANG=en_US.UTF-8
 
 
 
-
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
+#if [[ -n $SSH_CONNECTION ]]; then
+#  export EDITOR='vim'
+#else
+#  export EDITOR='mvim'
+#fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -129,7 +138,7 @@ alias ls="ls -FG"
 # DM manual modifications to path, mvn, sass, macvim, vscode, ngrok
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 #export PATH="$HOME/bin:/usr/local/bin:$PATH:/usr/local/apache-maven-3.5.2/bin:/Applications/Visual Studio Code.app/Contents    /Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
-export PATH="$HOME/bin:/usr/local/bin:$PATH:/Applications/Visual Studio Code.app/Contents    /Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
+export PATH="$HOME/bin:/usr/local/bin:$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
 
 # PostgressApp 
 PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}"
@@ -143,8 +152,57 @@ export PATH
 
 # Setting PATH for Python 3.8
 # The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.8/bin:${PATH}"
-export PATH
+#PATH="/Library/Frameworks/Python.framework/Versions/3.8/bin:${PATH}"
+#export PATH
+
+# Pyenv & Pyenv-virtualenv
+# https://github.com/pyenv/
+# https://github.com/pyenv/pyenv-virtualenv to allow easy venv with pyenv
+# Manage multiple python versions with pyenv and correctly simlink pip/pip3 depending on py version
+# $ brew upgrade pyenv
+# $ brew upgrade pyenv-virtualenv 
+#
+# Pyenv useful commands: 
+#  $ which python
+#  $ /Users/davidmeredith/.pyenv/shims/python
+# $ pyenv install --list 
+# $ pyenv versions
+# $ pyenv version
+# $ pyenv global <version> 
+#
+# Pyenv Virtualenv useful commands:
+# $ pyenv virtualenvs 
+# $ pyenv virtualenv <py_version> <venv_folder>
+# $ e.g. 'pyenv virtualenv 3.7.1 venv3_7_1'
+# $ pyenv activate <name>
+# $ pyenv deactivate
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+# nvim and pyenv
+# ================
+# Each Python interpreter that is used with Neovim will require the neovim package.
+# System wide:
+#   pip3 install --user neovim
+# Pyenv with Virutalenv:
+#   pyenv activate <name>
+#   pip install neovim
+# See: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim  
+
+# nvim
+# =========
+# use brew install version of nvim:
+alias vim="nvim"
+# for latested nvim 0.5 build uncomment below:
+#if [[ -d "${HOME}/myprogs/nvim-osx64/bin" ]]
+#then
+#    PATH="${HOME}/myprogs/nvim-osx64/bin:${PATH}"
+#    export PATH
+#fi
+#if type nvim > /dev/null 2>&1; then
+#  alias vim='nvim'
+#fi
 
 
 # Misc zsh config
@@ -158,7 +216,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=240
 
 # set vi keybindings
-bindkey -v
+#bindkey -v
 
 # Ctrl+r for search backward - must come after 'bindkey -v'
 # https://unix.stackexchange.com/questions/30168/how-to-enable-reverse-search-in-zsh
@@ -170,10 +228,11 @@ bindkey '^R' history-incremental-search-backward
 if [[ "$OSTYPE" == "darwin"* ]]
 then
   # Use MacVim for terminal vim
-  alias vim="mvim -v"
+  #alias vim="mvim"
 
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
+
 
 
 # Fuzzy file search: https://github.com/junegunn/fzf
