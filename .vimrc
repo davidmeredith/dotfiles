@@ -1,3 +1,16 @@
+set path+=**
+
+" Nice menu when typing `:find *.py`
+set wildmode=longest,list,full
+set wildmenu
+" Ignore files
+set wildignore+=*.pyc
+set wildignore+=*_build/*
+set wildignore+=**/coverage/*
+set wildignore+=**/node_modules/*
+set wildignore+=**/android/*
+set wildignore+=**/ios/*
+set wildignore+=**/.git/*
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -23,6 +36,10 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 "Plug 'nvim-telescope/telescope.nvim' " replacement for FZF??
 
+" Rooter makes fzf look up for a project directory instead of searching 
+" from pwd (default). Also respects .gitignore so not to look into spedified dirs.  
+Plug 'airblade/vim-rooter'
+
 " https://github.com/mbbill/undotree 
 Plug 'mbbill/undotree'
 
@@ -32,7 +49,7 @@ Plug 'mbbill/undotree'
 " show indent level
 Plug 'yggdroot/indentline' "also set (let g:indentLine_char = '▏' )
 " quickly align things
-Plug 'godlygeek/tabular'
+"Plug 'godlygeek/tabular'
 " Airline 
 Plug 'vim-airline/vim-airline'
 " Airline themes
@@ -45,6 +62,13 @@ Plug 'vim-airline/vim-airline-themes'
 " Colour theme
 " https://github.com/lifepillar/vim-solarized8
 Plug 'lifepillar/vim-solarized8'
+
+
+" https://www.chrisatmachine.com/Neovim/12-git-integration/
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-rhubarb'
+Plug 'junegunn/gv.vim'
 
 call plug#end()
 " Save and reload .vimrc and use :PlugInstall to install newly installed plugins.
@@ -60,12 +84,40 @@ call plug#end()
 "execute pathogen#infect()
 
 
-let g:indentLine_char = '▏'
+" Signify for Git
+" default updatetime 4000ms is not good for async update (from signify repo)
+set updatetime=100
+" Change these if you want
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+" I find the numbers disctracting
+let g:signify_sign_show_count = 0
+let g:signify_sign_show_text = 1
+" Jump though hunks
+nmap <leader>gj <plug>(signify-next-hunk)
+nmap <leader>gk <plug>(signify-prev-hunk)
+nmap <leader>gJ 9999<leader>gJ
+nmap <leader>gK 9999<leader>gk
+" Useful commands
+" :SignifyToggle
+" :SignifyToggleHighlight
 
+" Git commit browser junegunn/gv.vim 
+" useful commands:
+" :GV to open commit browser (You can pass git log options to the command, e.g. :GV -S foobar -- plugins).
+" :GV! will only list commits that affected the current file
+
+" Airline buffer-tabs
+let g:airline#extensions#tabline#enabled = 1
+
+let g:indentLine_char = '▏'
 
 filetype plugin indent on
 syntax on
 set exrc " run a .vimrc in a
+set mouse=a
 set ignorecase
 set smartcase
 set smartindent
@@ -132,10 +184,18 @@ nnoremap <S-right> :tabnext<CR>
 nnoremap <C-t>     :tabnew .<CR>
 "Close tab, but this overwrites C-ww for jumping between split panes
 "nnoremap <C-w>     :tabclose<CR>
+"
+" Tab for buffer next and shift-TAB to go back
+nnoremap <TAB>  :bnext<CR>
+nnoremap <S-TAB>  :bprev<CR>
 
+" Maybe try Esc remapping? You need to map these to some infrequent key pair, 
+" but if you need to type jk in sentences, then you can but just do it slowly. 
+inoremap jk <Esc>
+"inoremap kj <Esc>
+"nnoremap <C-c> <Esc>
 
-
-" i Insert norecursive remaps
+" i Insert mode norecursive remaps
 inoremap <S-left>  <Esc>:tabprevious<CR>a
 inoremap <S-right> <Esc>:tabnext<CR>a
 inoremap <C-t>     <Esc>:tabnew .<CR>
@@ -169,23 +229,38 @@ vnoremap <leader>p "_dP
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-" next greatest remap ever : primeagen, asbjornHaland
-nnoremap <leader>y "+y
-vnoremap <leader>y "+y
+" next greatest, yank into clipboard 
+nnoremap <leader>y "*y
+vnoremap <leader>y "*y
+" copy whole file into clipboard
 nnoremap <leader>Y gg"+yG
 
 " netrw
-" :Vex  to open file in new v split
+" :Vex  to open in new v split
 " :Ex   to open in current window
 let g:netrw_altv=1
 " set split size to 25%
 let g:netrw_winsize = 25
-" By default files will be opened in the same window as the netrw directory
-" 4 open in previous window, 2 open in a new vertical split, 3 open new tab
-let g:netrw_browse_split = 2
+"  netrw_browse_split: when browsing, <cr> will open the file by:
+"=0: re-using the same window  (default)
+"=1: horizontally splitting the window first
+"=2: vertically   splitting the window first
+"=3: open file in new tab
+let g:netrw_browse_split = 0
 " use tree view (when in Ex, hit 'i' to cycle through view modes)
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
+
+
+" If you use virtual environments putting these varibles in your config will 
+" ensure pynvim and node-with-nvim plugins are always available. 
+let g:python3_host_prog = expand("/Users/davidmeredith/.pyenv/shims/python")
+"let g:python3_host_prog = expand("~/.miniconda/envs/neovim/bin/python3.8") " <- example
+"
+"let g:node_host_prog = expand("<path to node with neovim installed>")
+"let g:node_host_prog = expand("~/.nvm/versions/node/v12.16.1/bin/node") " <- example
+
+
 
 "" Created to be able to save a file opened with :edit where the
 "" path contains directories that do not exist yet. This script
