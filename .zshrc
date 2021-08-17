@@ -27,7 +27,8 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "lib/completion", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
 
-# softmouth's vim zsh key bindings
+# softmoth's vim zsh key bindings
+# To avoid conflicts, need to load after: zsh-autosuggestions, zsh-syntax-highlighting
 zplug "softmoth/zsh-vim-mode"
 
 # Pretty, minimal and fast ZSH prompt https://github.com/sindresorhus/pure
@@ -142,6 +143,10 @@ export PATH="$HOME/bin:/usr/local/bin:$PATH:/Applications/Visual Studio Code.app
 
 # PostgressApp 
 PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}"
+export PATH
+
+# Cheatsheet https://github.com/chubin/cheat.sh#usage
+PATH="$HOME/myprogs/cheatsheet:${PATH}"
 export PATH
 
 

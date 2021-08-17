@@ -1,3 +1,13 @@
+" Dave's config for vim ('~/.dotfiles/.vimrc')
+"  '~/.config/nvim/init.vim' for nvim symlinks to this file
+"  '~/.vimrc' for gvim/ideavim symlinks to this file
+
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+
+" Add parent dir to the list of dirs searched for when using gf, :find, :sfind,
+" :tabfind (default is '.,,' ie dot for relative to current file and 
+" two commas for current directory)
 set path+=**
 
 " Nice menu when typing `:find *.py`
@@ -13,9 +23,9 @@ set wildignore+=**/ios/*
 set wildignore+=**/.git/*
 
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " not compatible with vi (default is not compatible)
@@ -25,26 +35,43 @@ set nocompatible
 " Specify a directory for plugins
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
-" Make sure you use single quotes for Plug urls
-Plug 'https://github.com/tpope/vim-commentary'
+
+if !exists('g:vscode')
+    " only add commentry if not in vscode
+    Plug 'https://github.com/tpope/vim-commentary'
+endif
+
 Plug 'https://tpope.io/vim/sensible.git'
 Plug 'https://tpope.io/vim/surround.git'
 Plug 'https://tpope.io/vim/repeat.git'
-"Plug 'ctrlpvim/ctrlp.vim' "Deprecated in favour of FZF
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-"Plug 'preservim/nerdtree'
-Plug 'junegunn/fzf.vim'
-"Plug 'nvim-telescope/telescope.nvim' " replacement for FZF??
 
-" Rooter makes fzf look up for a project directory instead of searching 
-" from pwd (default). Also respects .gitignore so not to look into spedified dirs.  
-Plug 'airblade/vim-rooter'
+if !exists('g:vscode')
+    " telescope
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim'
 
-" https://github.com/mbbill/undotree 
-Plug 'mbbill/undotree'
+    "Plug 'ctrlpvim/ctrlp.vim' "Deprecated in favour of FZF
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
 
-" Recommended colour scheme
-"Plug 'gruvbox-community/gruvbox' "also set (colorscheme gruvbox)
+    "Plug 'preservim/nerdtree'
+
+    " Rooter makes fzf look up for a project directory instead of searching 
+    " from pwd (default). Also respects .gitignore so not to look into spedified dirs.  
+    Plug 'airblade/vim-rooter'
+
+    " https://github.com/mbbill/undotree 
+    Plug 'mbbill/undotree'
+
+    " Treesitter
+    " Useful commands:
+    " :h nvim-treesitter-commands
+    " :TSInstall <language_to_install>
+    " TSInstallInfo 
+    ":checkhealth nvim_treesitter
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+endif
+
 
 " show indent level
 Plug 'yggdroot/indentline' "also set (let g:indentLine_char = '▏' )
@@ -55,23 +82,21 @@ Plug 'vim-airline/vim-airline'
 " Airline themes
 Plug 'vim-airline/vim-airline-themes'
 
-" distraction free reading
-"Plug 'junegunn/goyo.vim'
-
-
 " Colour theme
 " https://github.com/lifepillar/vim-solarized8
-Plug 'lifepillar/vim-solarized8'
+" Plug 'lifepillar/vim-solarized8'
+Plug 'gruvbox-community/gruvbox' "also set (colorscheme gruvbox)
 
 
 " https://www.chrisatmachine.com/Neovim/12-git-integration/
-Plug 'mhinz/vim-signify'
-Plug 'tpope/vim-fugitive'
-"Plug 'tpope/vim-rhubarb'
-Plug 'junegunn/gv.vim'
-
+if !exists('g:vscode')
+    Plug 'mhinz/vim-signify'
+    Plug 'tpope/vim-fugitive'
+    "Plug 'tpope/vim-rhubarb'
+    Plug 'junegunn/gv.vim'
+endif
 call plug#end()
-" Save and reload .vimrc and use :PlugInstall to install newly installed plugins.
+" Save, reload and source .vimrc and use :PlugInstall to install newly installed plugins.
 " (you can reload using ':so $MYVIMRC' or if you're editing .vimrc use ':so %')
 
 " Plugins installed with pathogen (https://github.com/tpope/vim-pathogen)
@@ -84,25 +109,53 @@ call plug#end()
 "execute pathogen#infect()
 
 
-" Signify for Git
+" Treesitter 
+" Treesitter folding
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+" Treesitter highlighting
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    custom_captures = {
+      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+      ["foo.bar"] = "Identifier",
+    },
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+
 " default updatetime 4000ms is not good for async update (from signify repo)
-set updatetime=100
-" Change these if you want
-let g:signify_sign_add               = '+'
-let g:signify_sign_delete            = '_'
-let g:signify_sign_delete_first_line = '‾'
-let g:signify_sign_change            = '~'
-" I find the numbers disctracting
-let g:signify_sign_show_count = 0
-let g:signify_sign_show_text = 1
-" Jump though hunks
-nmap <leader>gj <plug>(signify-next-hunk)
-nmap <leader>gk <plug>(signify-prev-hunk)
-nmap <leader>gJ 9999<leader>gJ
-nmap <leader>gK 9999<leader>gk
-" Useful commands
-" :SignifyToggle
-" :SignifyToggleHighlight
+if !exists('g:vscode')
+    set updatetime=100
+endif
+
+" Signify config
+if !exists('g:vscode')
+    " Change these if you want
+    let g:signify_sign_add               = '+'
+    let g:signify_sign_delete            = '_'
+    let g:signify_sign_delete_first_line = '‾'
+    let g:signify_sign_change            = '~'
+    " I find the numbers disctracting
+    let g:signify_sign_show_count = 0
+    let g:signify_sign_show_text = 1
+    " Jump though hunks
+    nmap <leader>gj <plug>(signify-next-hunk)
+    nmap <leader>gk <plug>(signify-prev-hunk)
+    nmap <leader>gJ 9999<leader>gJ
+    nmap <leader>gK 9999<leader>gk
+    " Useful commands
+    " :SignifyToggle
+    " :SignifyToggleHighlight
+endif
 
 " Git commit browser junegunn/gv.vim 
 " useful commands:
@@ -113,6 +166,16 @@ nmap <leader>gK 9999<leader>gk
 let g:airline#extensions#tabline#enabled = 1
 
 let g:indentLine_char = '▏'
+
+" VSCode config
+if exists('g:vscode')
+    " Don't need tpope's commentary for vscode
+    xmap gc  <Plug>VSCodeCommentary
+    nmap gc  <Plug>VSCodeCommentary
+    omap gc  <Plug>VSCodeCommentary
+    nmap gcc <Plug>VSCodeCommentaryLine
+endif
+
 
 filetype plugin indent on
 syntax on
@@ -146,14 +209,16 @@ set cmdheight=1
 
 " Use clipboard as default register
 if system('uname -s') == "Darwin\n"
-  set clipboard=unnamed "OSX
+    set clipboard=unnamed "OSX
 else
-  set clipboard=unnamedplus "Linux
+    set clipboard=unnamedplus "Linux
 endif
+
 set background=dark
-colorscheme flattened_dark "https://github.com/romainl/flattened
+" colorscheme flattened_dark "https://github.com/romainl/flattened
+"colorscheme liquidcarbon
 "colorscheme solarized8
-"colorscheme gruvbox
+colorscheme gruvbox
 
 " Dont need below as i use undodir
 "set backup
@@ -175,27 +240,47 @@ packloadall
 
 " The mac Cmd key is only visible to the MacVim GUI so you won't be able to use it in CLI Vim at all so prob best not to use it.
 
-" n = Normal mode remap, nore = no recursive map, map
+" Remaps
+" n = Normal mode remap, 
+" nore = no recursive map, 
+" so inoremap means = i Insert mode norecursive remaps
+" so nnoremap means = n Normal mode norecursive remaps
+
+" Insert undo break points on ,.!? chars (the '<c-g>u' part breaks the undo 
+" sequence and starts new change)
+" Can't use these remaps because intellij ideavim can't handle them:
+"inoremap , ,<c-g>u
+"inoremap . .<c-g>u
+"inoremap ! !<c-g>u
+"inoremap ? ?<c-g>u
+
 " Tab navigation like Firefox or Chrome
 "nnoremap <C-tab>   :tabnext<CR>
 "nnoremap <C-S-tab> :tabprevious<CR>
 nnoremap <S-left>  :tabprevious<CR>
 nnoremap <S-right> :tabnext<CR>
 nnoremap <C-t>     :tabnew .<CR>
-"Close tab, but this overwrites C-ww for jumping between split panes
+"Close tab, but this overwrites <C-ww> for jumping between split panes
 "nnoremap <C-w>     :tabclose<CR>
 "
 " Tab for buffer next and shift-TAB to go back
 nnoremap <TAB>  :bnext<CR>
 nnoremap <S-TAB>  :bprev<CR>
 
-" Maybe try Esc remapping? You need to map these to some infrequent key pair, 
-" but if you need to type jk in sentences, then you can but just do it slowly. 
-inoremap jk <Esc>
-"inoremap kj <Esc>
+" Remap Esc. You need to map these to some infrequent key pair, 
+" but if you need to type jj in sentences, then you can but just do it slowly. 
+inoremap jj <Esc>
+"inoremap jk <Esc>
 "nnoremap <C-c> <Esc>
+" Note, for vscode that uses neovim, you will still need to add the 
+" following to its keybindings.json file (replace single quotes with double)a:
+" {
+"    'command': 'vscode-neovim.compositeEscape1',
+"    'key': 'j',
+"    'when': 'neovim.mode == insert && editorTextFocus',
+"    'args': 'j'
+"}
 
-" i Insert mode norecursive remaps
 inoremap <S-left>  <Esc>:tabprevious<CR>a
 inoremap <S-right> <Esc>:tabnext<CR>a
 inoremap <C-t>     <Esc>:tabnew .<CR>
@@ -207,29 +292,36 @@ inoremap <C-t>     <Esc>:tabnew .<CR>
 set rtp+=/usr/local/opt/fzf
 nmap <C-P> :FZF<CR>
 
+" Telescope remaps to find files/grep
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 " https://stackoverflow.com/questions/11122866/vim-default-leader-key-on-a-macbook
 let mapleader = ' '
 nnoremap <leader>[ :vertical resize +5<CR>
 nnoremap <leader>] :vertical resize -5<CR>
-" jump between windows
+" jump between windows/splits
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
-nnoremap <leader>u :UndotreeToggle<CR>
 
-" delete visual selection into blackhole register without
+" Delete visual selection into blackhole register without
 " overwriting default register
 vnoremap <leader>d "_d
-" delete visual selection into blackhole register and paste
+" Delete visual selection into blackhole register and paste
 " default register before cursor without overwriting the default reg - great !
 vnoremap <leader>p "_dP
 
-" move visual selection up and down
+" Move visual selection up and down
+" so, for J, move (:m) end of visual selection ('>) one line down then enter
+" (<CR> / carridage return) and select previous vis selection
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-" next greatest, yank into clipboard 
+" Yank into clipboard 
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
 " copy whole file into clipboard
@@ -275,12 +367,10 @@ let g:python3_host_prog = expand("/Users/davidmeredith/.pyenv/shims/python")
 "  :write
 "endfunction
 
-" Config for nvim so it reads this file '.vimrc'
-" see: ~/.config/nvim/init.vim
-" https://vi.stackexchange.com/questions/12794/how-to-share-config-between-vim-and-neovim
 
 
 " undotree Persistent undo
+nnoremap <leader>u :UndotreeToggle<CR>
 if has("persistent_undo")
    let target_path = expand('~/.vim/undodir')
 
