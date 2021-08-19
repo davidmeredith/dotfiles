@@ -110,6 +110,8 @@ call plug#end()
 "   git clone https://github.com/tpope/vim-sensible.git
 "execute pathogen#infect()
 
+" Remaps (ensure leader key is mapped before defining it)
+let mapleader = ' '
 
 " Treesitter 
 " Treesitter folding
@@ -242,8 +244,7 @@ packloadall
 
 " The mac Cmd key is only visible to the MacVim GUI so you won't be able to use it in CLI Vim at all so prob best not to use it.
 
-" Remaps (ensure leader key is mapped before defining it)
-let mapleader = ' '
+" Remaps
 " n = Normal mode remap, 
 " nore = no recursive map, 
 " so inoremap means = i Insert mode norecursive remaps
