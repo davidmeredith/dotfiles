@@ -15,9 +15,11 @@ set wildmode=longest,list,full
 set wildmenu
 " Ignore files
 set wildignore+=*.pyc
+set wildignore+=*.class
 set wildignore+=*_build/*
 set wildignore+=**/coverage/*
 set wildignore+=**/node_modules/*
+set wildignore+=**/target/*
 set wildignore+=**/android/*
 set wildignore+=**/ios/*
 set wildignore+=**/.git/*
@@ -240,7 +242,8 @@ packloadall
 
 " The mac Cmd key is only visible to the MacVim GUI so you won't be able to use it in CLI Vim at all so prob best not to use it.
 
-" Remaps
+" Remaps (ensure leader key is mapped before defining it)
+let mapleader = ' '
 " n = Normal mode remap, 
 " nore = no recursive map, 
 " so inoremap means = i Insert mode norecursive remaps
@@ -298,8 +301,6 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-" https://stackoverflow.com/questions/11122866/vim-default-leader-key-on-a-macbook
-let mapleader = ' '
 nnoremap <leader>[ :vertical resize +5<CR>
 nnoremap <leader>] :vertical resize -5<CR>
 " jump between windows/splits
