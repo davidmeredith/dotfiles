@@ -1,9 +1,15 @@
-" Dave's config for vim ('~/.dotfiles/.vimrc')
-"  '~/.config/nvim/init.vim' for nvim symlinks to this file
-"  '~/.vimrc' for gvim/ideavim symlinks to this file
+" Dave's vim config ('~/.dotfiles/.vimrc')
+" Symlinks:
+"  '~/.config/nvim/init.vim' (nvim)
+"  '~/.vimrc' (for gvim & ideavim)
 
+" Note ~/.vim dir is a synmlink: ~/.vim@ -> /Users/davidmeredith/.dotfiles/vim
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
+
+" I'm going to start moving some config into lua
+lua require('basic')
+
 
 " Add parent dir to the list of dirs searched for when using gf, :find, :sfind,
 " :tabfind (default is '.,,' ie dot for relative to current file and 
@@ -39,7 +45,7 @@ set nocompatible
 call plug#begin('~/.vim/plugged')
 
 if !exists('g:vscode')
-    " only add commentry if not in vscode
+    " only add commentary if not in vscode
     Plug 'https://github.com/tpope/vim-commentary'
 endif
 
@@ -72,6 +78,10 @@ if !exists('g:vscode')
     " TSInstallInfo 
     ":checkhealth nvim_treesitter
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
+    " nvim-tree
+    "Plug 'kyazdani42/nvim-web-devicons' " for file icons
+    "Plug 'kyazdani42/nvim-tree.lua'
 endif
 
 
@@ -93,9 +103,12 @@ Plug 'gruvbox-community/gruvbox' "also set (colorscheme gruvbox)
 " https://www.chrisatmachine.com/Neovim/12-git-integration/
 if !exists('g:vscode')
     Plug 'mhinz/vim-signify'
-    Plug 'tpope/vim-fugitive'
+    " I don't need vim-fugitve, use the CLI for git rather than in vim. 
+    "Plug 'tpope/vim-fugitive'
+    " I don't need gv.vim (git log browser), use CLI instead. Requires fugitive. 
+    "Plug 'junegunn/gv.vim'
+    " Can't use rhubarb, requires fugitive. 
     "Plug 'tpope/vim-rhubarb'
-    Plug 'junegunn/gv.vim'
 endif
 call plug#end()
 " Save, reload and source .vimrc and use :PlugInstall to install newly installed plugins.
@@ -141,7 +154,7 @@ if !exists('g:vscode')
     set updatetime=100
 endif
 
-" Signify config
+" Signify config for viewing and moving over git changes
 if !exists('g:vscode')
     " Change these if you want
     let g:signify_sign_add               = '+'
@@ -152,10 +165,14 @@ if !exists('g:vscode')
     let g:signify_sign_show_count = 0
     let g:signify_sign_show_text = 1
     " Jump though hunks
-    nmap <leader>gj <plug>(signify-next-hunk)
-    nmap <leader>gk <plug>(signify-prev-hunk)
-    nmap <leader>gJ 9999<leader>gJ
-    nmap <leader>gK 9999<leader>gk
+    "nmap <leader>gj <plug>(signify-next-hunk)
+    "nmap <leader>gk <plug>(signify-prev-hunk)
+    "nmap <leader>gJ 9999<leader>gJ
+    "nmap <leader>gK 9999<leader>gk
+    " below is more friendly for intellij remap/keymap
+    nmap ]v <plug>(signify-next-hunk)
+    nmap [v <plug>(signify-prev-hunk)
+
     " Useful commands
     " :SignifyToggle
     " :SignifyToggleHighlight
@@ -166,14 +183,15 @@ endif
 " :GV to open commit browser (You can pass git log options to the command, e.g. :GV -S foobar -- plugins).
 " :GV! will only list commits that affected the current file
 
-" Airline buffer-tabs
+" Airline buffer-tabs (lists buffers in a tab like row in top left)
+" Note that I remap tab and shift-tab to bnext and bprev below
 let g:airline#extensions#tabline#enabled = 1
 
 let g:indentLine_char = '▏'
 
 " VSCode config
 if exists('g:vscode')
-    " Don't need tpope's commentary for vscode
+    " Don't need tpope's commentary for vscode, use vscode's plugin instead
     xmap gc  <Plug>VSCodeCommentary
     nmap gc  <Plug>VSCodeCommentary
     omap gc  <Plug>VSCodeCommentary
@@ -258,7 +276,8 @@ packloadall
 "inoremap ! !<c-g>u
 "inoremap ? ?<c-g>u
 
-" Tab navigation like Firefox or Chrome
+" Vim Tab navigation (note, this is different to my shell nav remaps 
+" with <S-Cmd-]> and <S-Cmd-[> which I also use for browser)
 "nnoremap <C-tab>   :tabnext<CR>
 "nnoremap <C-S-tab> :tabprevious<CR>
 nnoremap <S-left>  :tabprevious<CR>
@@ -267,7 +286,7 @@ nnoremap <C-t>     :tabnew .<CR>
 "Close tab, but this overwrites <C-ww> for jumping between split panes
 "nnoremap <C-w>     :tabclose<CR>
 "
-" Tab for buffer next and shift-TAB to go back
+" Tab for buffer-next and shift-TAB for buffer-prev 
 nnoremap <TAB>  :bnext<CR>
 nnoremap <S-TAB>  :bprev<CR>
 
@@ -302,17 +321,20 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
+" Splits
 nnoremap <leader>[ :vertical resize +5<CR>
 nnoremap <leader>] :vertical resize -5<CR>
-" jump between windows/splits
+" jump between splits
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 
+" Clean Delete
 " Delete visual selection into blackhole register without
 " overwriting default register
 vnoremap <leader>d "_d
+" Clean Delete Paste 
 " Delete visual selection into blackhole register and paste
 " default register before cursor without overwriting the default reg - great !
 vnoremap <leader>p "_dP
@@ -372,7 +394,15 @@ let g:python3_host_prog = expand("/Users/davidmeredith/.pyenv/shims/python")
 
 
 " undotree Persistent undo
+" toggle undotree panel
 nnoremap <leader>u :UndotreeToggle<CR>
+" Press ? in undotree window for quick help
+" Undo history is sorted by timestamp. 
+" Markers:
+"   Current state: > number <
+"   Redo state:  { number }  (the next state that would be restored by :redo or <ctrl-r>
+"   Most recent: [ number ]
+"   Saved changes marked with 's' and 'S' indicates most recent save
 if has("persistent_undo")
    let target_path = expand('~/.vim/undodir')
 

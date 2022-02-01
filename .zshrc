@@ -238,6 +238,8 @@ then
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
+# Poetry for py
+export PATH="$HOME/.poetry/bin:$PATH"
 
 
 # Fuzzy file search: https://github.com/junegunn/fzf
@@ -246,4 +248,5 @@ fi
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/davidmeredith/.sdkman"
 [[ -s "/Users/davidmeredith/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/davidmeredith/.sdkman/bin/sdkman-init.sh"
+
 
