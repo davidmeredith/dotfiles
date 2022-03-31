@@ -314,6 +314,7 @@ inoremap <C-t>     <Esc>:tabnew .<CR>
 " Remap FZF to Ctrl+p
 set rtp+=/usr/local/opt/fzf
 nmap <C-P> :FZF<CR>
+" note you can then do "vim `FZF`" on the CLI
 
 " Telescope remaps to find files/grep
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -324,6 +325,8 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " Splits
 nnoremap <leader>[ :vertical resize +5<CR>
 nnoremap <leader>] :vertical resize -5<CR>
+nnoremap <leader>+ :resize +5<CR>
+nnoremap <leader>- :resize -5<CR>
 " jump between splits
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>

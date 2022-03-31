@@ -137,9 +137,7 @@ alias ls="ls -FG"
 #export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-14.jdk/Contents/Home
 
 # DM manual modifications to path, mvn, sass, macvim, vscode, ngrok
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-#export PATH="$HOME/bin:/usr/local/bin:$PATH:/usr/local/apache-maven-3.5.2/bin:/Applications/Visual Studio Code.app/Contents    /Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
-export PATH="$HOME/bin:/usr/local/bin:$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
+#export PATH="$HOME/bin:/usr/local/bin:$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
 
 # PostgressApp 
 PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}"
@@ -150,17 +148,15 @@ PATH="$HOME/myprogs/cheatsheet:${PATH}"
 export PATH
 
 
-# Setting PATH for Python 3.7
-# The original version is saved in .bash_profile.pysave
-#PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
-#export PATH
-
-# Setting PATH for Python 3.8
+# Deprecated by pyenv - Setting PATH for Python 3.8
 # The original version is saved in .bash_profile.pysave
 #PATH="/Library/Frameworks/Python.framework/Versions/3.8/bin:${PATH}"
 #export PATH
 
-# Pyenv & Pyenv-virtualenv
+
+# ===========================
+# Pyenv & Pyenv-virtualenv:
+# ===========================
 # https://github.com/pyenv/
 # https://github.com/pyenv/pyenv-virtualenv to allow easy venv with pyenv
 # Manage multiple python versions with pyenv and correctly simlink pip/pip3 depending on py version
@@ -171,21 +167,53 @@ export PATH
 #  $ which python
 #  $ /Users/davidmeredith/.pyenv/shims/python
 # $ pyenv install --list 
+# $ pyenv install <version>
 # $ pyenv versions
 # $ pyenv version
 # $ pyenv global <version> 
 #
 # Pyenv Virtualenv useful commands:
-# $ pyenv virtualenvs 
-# $ pyenv virtualenv <py_version> <venv_folder>
-# $ e.g. 'pyenv virtualenv 3.7.1 venv3_7_1'
-# $ pyenv activate <name>
+# List pyenvs:
+#    $ pyenv virtualenvs 
+#
+# Create new pyenv with specified version: 
+#    $ pyenv virtualenv <py_version> <project_venv_folder>
+#      e.g. 'pyenv virtualenv 3.7.1 venv3_7_1'
+#
+# Create new pyenv with current version: 
+#   $ pyenv version
+#   $ ...
+#   $ pyenv virtualenv myvenv
+#
+# Actviate and Deactivate the pyenv:
+# $ pyenv activate <pyenv_name>
 # $ pyenv deactivate
+#
+# To delete a pyenv venv, you have to manually delete its folder, e.g.  
+#   'rm -rf /Users/davidmeredith/.pyenv/versions/<pyVersion>' or 
+#   'rm -rf /Users/davidmeredith/.pyenv/versions/<pyVersion>/envs/myVenv' 
+#       (in last eg, myVenv was created from a particular version)
+# 
+# Pyenv config:
+# ===============
+# See '~/.zprofile' that has the following, note PATH prefix: 
+#     # Set env var that points to the pyenv dir
+#     export PYENV_ROOT="$HOME/.pyenv"
+#     # Put pyenv first in your search path so that the OS will find 
+#     # pyenv's python before any other pythons
+#     export PATH="$PYENV_ROOT/bin:$PATH"
+#     eval "$(pyenv init --path)"
+#
+#  In .zsch - init pyenv each time you open a terminal:
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
 fi
-# nvim and pyenv
+#
+# After creating a new venv, 'pip list' should show an empty list of packages 
+# with just pip and setup tools. 
+#
+# nvim and pyenv:
 # ================
 # Each Python interpreter that is used with Neovim will require the neovim package.
 # System wide:
@@ -238,11 +266,10 @@ then
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-# Poetry for py
-export PATH="$HOME/.poetry/bin:$PATH"
 
 
 # Fuzzy file search: https://github.com/junegunn/fzf
+# Allows you to call 'FZF' or 'vim `FZF`' on the CLI
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
