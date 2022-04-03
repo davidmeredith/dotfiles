@@ -1,4 +1,5 @@
-
+# After modifications reload by sourcing this file
+# source ~/.zshrc
 # Make sure zplug is installed
 if [[ ! -d ~/.zplug ]]; then
     git clone https://github.com/zplug/zplug ~/.zplug && \
@@ -8,11 +9,32 @@ else
     source ~/.zplug/init.zsh
 fi
 
+# zsh-autosuggestions
+if [[ ! -d ~/.zsh/zsh-autosuggestions ]]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+fi
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# softmouth's vim zsh terminal cursor customisation
+# Add to .zshrc, before this plugin is loaded:
+# Use another key instead of Esc to switch to NORMAL mode, other option is '^D' (control D)
+VIM_MODE_VICMD_KEY="jj"
+
+# softmouth's vim zsh terminal cursor customisation
+MODE_CURSOR_VIINS="#00ff00 blinking bar"
+MODE_CURSOR_REPLACE="$MODE_CURSOR_VIINS #ff0000"
+MODE_CURSOR_VICMD="green block"
+MODE_CURSOR_SEARCH="#ff00ff steady underline"
+MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
+MODE_CURSOR_VLINE="$MODE_CURSOR_VISUAL #00ffff"
+
 ## begin zplug ##
 zplug "zplug/zplug"
 
+# Theme
+zplug "spaceship-prompt/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 # Theme - https://denysdovhan.com/spaceship-prompt/
-zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+#zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 
 zplug "zsh-users/zsh-completions"   
 # Set the priority when loading
@@ -29,7 +51,7 @@ zplug "plugins/git",   from:oh-my-zsh
 
 # softmoth's vim zsh key bindings
 # To avoid conflicts, need to load after: zsh-autosuggestions, zsh-syntax-highlighting
-#zplug "softmoth/zsh-vim-mode"
+zplug "softmoth/zsh-vim-mode"
 
 # Pretty, minimal and fast ZSH prompt https://github.com/sindresorhus/pure
 #zplug mafredri/zsh-async, from:github
@@ -45,13 +67,6 @@ fi
 zplug load
 ## end zplug ##
 
-# softmouth's vim zsh terminal cursor customisation
-#MODE_CURSOR_VIINS="#00ff00 blinking bar"
-#MODE_CURSOR_REPLACE="$MODE_CURSOR_VIINS #ff0000"
-#MODE_CURSOR_VICMD="green block"
-#MODE_CURSOR_SEARCH="#ff00ff steady underline"
-#MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
-#MODE_CURSOR_VLINE="$MODE_CURSOR_VISUAL #00ffff"
 
 SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
@@ -62,7 +77,7 @@ SPACESHIP_PROMPT_ORDER=(
 #  hg            # Mercurial section (hg_branch  + hg_status)
   package       # Package version
   node          # Node.js section
-  ruby          # Ruby section
+#  ruby          # Ruby section
 #  elixir        # Elixir section
 #  xcode         # Xcode section
 #  swift         # Swift section
@@ -91,7 +106,7 @@ SPACESHIP_PROMPT_ORDER=(
 # below spaceship default configs true
 SPACESHIP_PROMPT_ADD_NEWLINE=true
 SPACESHIP_PROMPT_SEPARATE_LINE=true
-
+SPACESHIP_BATTERY_THRESHOLD=50
 
 # User configuration
 
@@ -121,7 +136,7 @@ export LANG=en_US.UTF-8
 alias ic="ibmcloud"
 alias ls="ls -FG"
 
-# JAVA_HOME and jdk
+# JAVA_HOME and jdk (deprecated by sdkman)
 # http://www.mkyong.com/java/how-to-set-java_home-environment-variable-on-mac-os-x/
 # to see which jdk is installed:
 # /usr/libexec/java_home -V
@@ -162,6 +177,7 @@ export PATH
 # Manage multiple python versions with pyenv and correctly simlink pip/pip3 depending on py version
 # $ brew upgrade pyenv
 # $ brew upgrade pyenv-virtualenv 
+# For useful guide see: https://realpython.com/intro-to-pyenv/
 #
 # Pyenv useful commands: 
 #  $ which python
@@ -178,21 +194,36 @@ export PATH
 #
 # Create new pyenv with specified version: 
 #    $ pyenv virtualenv <py_version> <project_venv_folder>
-#      e.g. 'pyenv virtualenv 3.7.1 venv3_7_1'
+#    e.g. 'pyenv virtualenv 3.7.1 venv3_7_1'
 #
 # Create new pyenv with current version: 
-#   $ pyenv version
-#   $ ...
-#   $ pyenv virtualenv myvenv
+#   $ pyenv virtualenv <new_pyenv_name>
 #
-# Actviate and Deactivate the pyenv:
-# $ pyenv activate <pyenv_name>
-# $ pyenv deactivate
+# Actviate and Deactivate pyenv manually:
+#    $ pyenv activate <pyenv_name>
+#    $ pyenv deactivate
 #
-# To delete a pyenv venv, you have to manually delete its folder, e.g.  
-#   'rm -rf /Users/davidmeredith/.pyenv/versions/<pyVersion>' or 
-#   'rm -rf /Users/davidmeredith/.pyenv/versions/<pyVersion>/envs/myVenv' 
-#       (in last eg, myVenv was created from a particular version)
+# Create a .python-version file in your project's root dir: 
+# this auto activtates the pyenv and applies to sub-dirs 
+# (requires '$(pyenv virtualenv-init -)' in your env setup)
+#    $ pyenv local <pyenv_name>
+#
+# To check which pyenv python:
+#    $ pyenv which python
+#    /Users/davidmeredith/.pyenv/versions/energy_vectors/bin/python
+#    (energy_vectors)
+#
+# To check which pip:
+#    $ pyenv which pip
+#    /Users/davidmeredith/.pyenv/versions/energy_vectors/bin/pip
+#    (energy_vectors)
+
+# To delete a pyenv venv:
+# you have to manually delete its folder, e.g.  
+#   rm -rf /Users/davidmeredith/.pyenv/versions/<pyVersion> 
+#     or 
+#   rm -rf /Users/davidmeredith/.pyenv/versions/<pyVersion>/envs/myVenv 
+#       (myVenv was created from a particular version)
 # 
 # Pyenv config:
 # ===============
@@ -205,6 +236,7 @@ export PATH
 #     eval "$(pyenv init --path)"
 #
 #  In .zsch - init pyenv each time you open a terminal:
+#  used to set the pyenv virtualenv from '.python-version' file
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
@@ -248,7 +280,9 @@ setopt hist_ignore_all_dups
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=240
 
+# ==================================
 # set vi keybindings
+# ==================================
 #bindkey -v
 
 # Ctrl+r for search backward - must come after 'bindkey -v'
@@ -258,11 +292,9 @@ bindkey '^R' history-incremental-search-backward
 
 #source "$HOME/.aliases"
 #
-if [[ "$OSTYPE" == "darwin"* ]]
-then
+if [[ "$OSTYPE" == "darwin"* ]]; then
   # Use MacVim for terminal vim
   #alias vim="mvim"
-
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 

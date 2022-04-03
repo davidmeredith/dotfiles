@@ -58,10 +58,20 @@ if !exists('g:vscode')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
 
-    "Plug 'ctrlpvim/ctrlp.vim' "Deprecated in favour of FZF
+    " FZV in Vim 
+    " Ctrlpvim is deprecated in favour of FZF: 
+    " Useful commands:
+    "   :Files
+    "   :Colors
+    "   :Marks
+    "   :History  "v:oldfiles and open buffers
+    "   :History: "Command history
+    "   :Commands "List available commands
+    "   :Buffers
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
 
+    "  Don't bother with nerdtree, use FZF and netrw
     "Plug 'preservim/nerdtree'
 
     " Rooter makes fzf look up for a project directory instead of searching 
