@@ -3,6 +3,7 @@
 Thanks to Drew Silcock and James Clark.
 
 Note that the repository contains submodules so must be cloned recursively.
+Also contains the iterm LiquidCarbon theme I like for terminal. 
 
 ```sh
 git clone --recursive  https://github.com/davidmeredith/dotfiles.git ~/.dotfiles
