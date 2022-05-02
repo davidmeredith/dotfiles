@@ -187,6 +187,7 @@ export PATH
 # $ pyenv versions
 # $ pyenv version
 # $ pyenv global <version> 
+# $ pyenv virtual-env-delete <env>
 #
 # Pyenv Virtualenv useful commands:
 # List pyenvs:

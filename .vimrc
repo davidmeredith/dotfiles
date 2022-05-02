@@ -1,5 +1,5 @@
 " Dave's vim config ('~/.dotfiles/.vimrc')
-" Symlinks:
+" Symlinks to this file:
 "  '~/.config/nvim/init.vim' (nvim)
 "  '~/.vimrc' (for gvim & ideavim)
 
