@@ -18,6 +18,10 @@ create_symlink .vimrc
 #create_symlink .aliases
 rm -rf ~/.vim && create_symlink vim .vim
 
+mkdir -p ~/.config/nvim
+#ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
+create_symlink .vimrc ~/.config/nvim/init.vim
+
 create_symlink .zshrc
 # Install zsh_machine symlink if it exists.
 # test -e .zsh_machine && create_symlink .zsh_machine
