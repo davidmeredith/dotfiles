@@ -25,6 +25,11 @@ create_symlink .vimrc ~/.config/nvim/init.vim
 create_symlink .zshrc
 # Install zsh_machine symlink if it exists.
 # test -e .zsh_machine && create_symlink .zsh_machine
+
+# Create link for tmux:
+# ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
+create_symlink .tmux.conf
+
 echo "[1/2] Done."
 
 
