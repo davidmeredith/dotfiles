@@ -193,9 +193,9 @@ export PATH
 # List pyenvs:
 #    $ pyenv virtualenvs 
 #
-# Create new pyenv with specified version: 
+# Create new pyenv with specified version for your project: 
 #    $ pyenv virtualenv <py_version> <project_venv_folder>
-#    e.g. 'pyenv virtualenv 3.7.1 venv3_7_1'
+#    e.g. 'pyenv virtualenv 3.7.1 venv3_7_1_myPro'
 #
 # Create new pyenv with current version: 
 #   $ pyenv virtualenv <new_pyenv_name>
@@ -280,6 +280,8 @@ setopt hist_ignore_all_dups
 # Highlighting rules
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=240
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff"
 
 # ==================================
 # set vi keybindings
@@ -302,7 +304,8 @@ fi
 
 
 # Fuzzy file search: https://github.com/junegunn/fzf
-# Allows you to call 'FZF' or 'vim `FZF`' on the CLI
+# Allows you to call 'fzf' or 'vim $(fzf)' or 'vim `FZF`' on the CLI
+# see: https://github.com/junegunn/fzf#using-the-finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
@@ -310,3 +313,7 @@ export SDKMAN_DIR="${HOME}/.sdkman"
 [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
 
 
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/david.meredith/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

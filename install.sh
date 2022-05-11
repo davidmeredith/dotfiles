@@ -30,6 +30,9 @@ create_symlink .zshrc
 # ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 create_symlink .tmux.conf
 
+# ln -s ~/.dotfiles/.vimrc ~/.ideavimrc
+create_symlink .ideavimrc
+
 echo "[1/2] Done."
 
 
