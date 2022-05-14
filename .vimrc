@@ -200,8 +200,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:indentLine_char = '▏'
 
 " VSCode config
+" TPope's commentry plugin is already provided by VSCode, so you can use 
+" 'VSCodeCommentary' inside vscode to use these services. 
 if exists('g:vscode')
-    " Don't need tpope's commentary for vscode, use vscode's plugin instead
     xmap gc  <Plug>VSCodeCommentary
     nmap gc  <Plug>VSCodeCommentary
     omap gc  <Plug>VSCodeCommentary

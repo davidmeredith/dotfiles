@@ -15,20 +15,10 @@ if [[ ! -d ~/.zsh/zsh-autosuggestions ]]; then
 fi
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# softmouth's vim zsh terminal cursor customisation
-# Add to .zshrc, before this plugin is loaded:
-# Use another key instead of Esc to switch to NORMAL mode, other option is '^D' (control D)
-VIM_MODE_VICMD_KEY="jj"
 
-# softmouth's vim zsh terminal cursor customisation
-MODE_CURSOR_VIINS="#00ff00 blinking bar"
-MODE_CURSOR_REPLACE="$MODE_CURSOR_VIINS #ff0000"
-MODE_CURSOR_VICMD="green block"
-MODE_CURSOR_SEARCH="#ff00ff steady underline"
-MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
-MODE_CURSOR_VLINE="$MODE_CURSOR_VISUAL #00ffff"
-
+##############################################################
 ## begin zplug ##
+##############################################################
 zplug "zplug/zplug"
 
 # Theme
@@ -50,8 +40,23 @@ zplug "lib/completion", from:oh-my-zsh
 zplug "plugins/git",   from:oh-my-zsh
 
 # softmoth's vim zsh key bindings
+# Add vars to .zshrc, before this plugin is loaded.
+# Use another key instead of Esc to switch to NORMAL mode, other option is '^D' (control D)
+#VIM_MODE_VICMD_KEY="jj"
+#MODE_CURSOR_VIINS="#00ff00 blinking bar"
+#MODE_CURSOR_REPLACE="$MODE_CURSOR_VIINS #ff0000"
+#MODE_CURSOR_VICMD="green block"
+#MODE_CURSOR_SEARCH="#ff00ff steady underline"
+#MODE_CURSOR_VISUAL="$MODE_CURSOR_VICMD steady bar"
+#MODE_CURSOR_VLINE="$MODE_CURSOR_VISUAL #00ffff"
 # To avoid conflicts, need to load after: zsh-autosuggestions, zsh-syntax-highlighting
-zplug "softmoth/zsh-vim-mode"
+#zplug "softmoth/zsh-vim-mode"
+
+# Alternative vim mode plugin for zsh
+# Only changing the escape key to `jj` in insert mode, we still
+# keep using the default keybindings Esc and `^[` in other modes
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
+zplug "jeffreytse/zsh-vi-mode"
 
 # Pretty, minimal and fast ZSH prompt https://github.com/sindresorhus/pure
 #zplug mafredri/zsh-async, from:github
@@ -76,37 +81,37 @@ SPACESHIP_PROMPT_ORDER=(
   git           # Git section (git_branch + git_status)
 #  hg            # Mercurial section (hg_branch  + hg_status)
   package       # Package version
-  node          # Node.js section
+#  node          # Node.js section
 #  ruby          # Ruby section
 #  elixir        # Elixir section
 #  xcode         # Xcode section
 #  swift         # Swift section
-  golang        # Go section
+#  golang        # Go section
 #  php           # PHP section
-  rust          # Rust section
+#  rust          # Rust section
 #  haskell       # Haskell Stack section
 #  julia         # Julia section
   docker        # Docker section
-  aws           # Amazon Web Services section
+#  aws           # Amazon Web Services section
   venv          # virtualenv section
-  conda         # conda virtualenv section
+#  conda         # conda virtualenv section
   pyenv         # Pyenv section
-  dotnet        # .NET section
-  ember         # Ember.js section
-  kubectl       # Kubectl context section
-  terraform     # Terraform workspace section
-  exec_time     # Execution time
+  # dotnet        # .NET section
+  # ember         # Ember.js section
+#  kubectl       # Kubectl context section
+#  terraform     # Terraform workspace section
+#  exec_time     # Execution time
   line_sep      # Line break
-  battery       # Battery level and status
+  # battery       # Battery level and status
   vi_mode       # Vi-mode indicator
-  jobs          # Background jobs indicator
+  #jobs          # Background jobs indicator
   exit_code     # Exit code section
   char          # Prompt character
 )
 # below spaceship default configs true
 SPACESHIP_PROMPT_ADD_NEWLINE=true
 SPACESHIP_PROMPT_SEPARATE_LINE=true
-SPACESHIP_BATTERY_THRESHOLD=50
+#SPACESHIP_BATTERY_THRESHOLD=50
 
 # User configuration
 
@@ -187,27 +192,32 @@ export PATH
 # $ pyenv versions
 # $ pyenv version
 # $ pyenv global <version> 
-# $ pyenv virtual-env-delete <env>
+# $ pyenv virtualenv-delete <env>
 #
 # Pyenv Virtualenv useful commands:
-# List pyenvs:
+#
+# List existing virtualenvs:
 #    $ pyenv virtualenvs 
 #
-# Create new pyenv with specified version for your project: 
-#    $ pyenv virtualenv <py_version> <project_venv_folder>
-#    e.g. 'pyenv virtualenv 3.7.1 venv3_7_1_myPro'
+# Create new virtualenv for your project with the specified pyenv py version: 
+#    $ pyenv virtualenv <pyenv_py_version> <project_venv_folder>
+#    e.g. 'pyenv virtualenv 3.7.1 venv3_7_1_myProject'
 #
-# Create new pyenv with current version: 
+# Create new virtualenv with the current pyenv py version: 
 #   $ pyenv virtualenv <new_pyenv_name>
 #
-# Actviate and Deactivate pyenv manually:
-#    $ pyenv activate <pyenv_name>
+# Actviate and Deactivate virtualenv manually:
+#    $ pyenv activate <virtualenv_name>
 #    $ pyenv deactivate
+#  
+#    If eval "$(pyenv virtualenv-init -)" is configured in your shell, pyenv-virtualenv 
+#    will automatically activate/deactivate virtualenvs on entering/leaving 
+#    directories which contain a .python-version file that contains the name of 
+#    a valid virtual environment as shown in the output of pyenv virtualenvs 
+#    The .python-version files are used by pyenv to denote local Python 
+#    versions and can be created and deleted with the pyenv local command.
 #
-# Create a .python-version file in your project's root dir: 
-# this auto activtates the pyenv and applies to sub-dirs 
-# (requires '$(pyenv virtualenv-init -)' in your env setup)
-#    $ pyenv local <pyenv_name>
+#    $ pyenv local <virtualenv_name>
 #
 # To check which pyenv python:
 #    $ pyenv which python
@@ -272,14 +282,28 @@ alias vim="nvim"
 
 
 # Misc zsh config
-HISTFILE=~/.zsh_history
-HISTSIZE=2000
-SAVEHIST=$HISTSIZE
-setopt hist_ignore_all_dups
+export HISTFILE=~/.zsh_history
+export HISTSIZE=10000000
+export SAVEHIST=$HISTSIZE
+# While searching with Ctrl+R, Stepping through the history with UP and DOWN keys 
+# becomes a bit annoying if the same command comes up again and again. A better 
+# option is to skip duplicates and show each command only once
+setopt HIST_FIND_NO_DUPS
+# do not write duplicates to the history file  
+setopt HIST_IGNORE_ALL_DUPS
+# Immediate append - Setting the inc_append_history option ensures that 
+# commands are added to the history immediately (otherwise, this would happen 
+# only when the shell exits, and you could lose history upon unexpected/unclean 
+# termination of the shell)
+setopt INC_APPEND_HISTORY
+# Add timestamp to history
+export HISTTIMEFORMAT="[%F %T] "
+setopt EXTENDED_HISTORY
+
 
 # Highlighting rules
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=240
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=240
 #ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff"
 
@@ -294,10 +318,39 @@ bindkey '^R' history-incremental-search-backward
 
 
 #source "$HOME/.aliases"
+
+# iterm2 shell integration tools 
+# Install using iterm's 'Install Shell Integration' menu item
+# and then source the 'iterm2_shell_integration.zsh' script.  
+# see https://iterm2.com/documentation-shell-integration.html
+#
+# - [Marks]: Use Cmd-Shift-Up and Down arrows to navigate marks. 
+# - [Download with scp]: You can right-click on a filename (e.g., in the output 
+#   of ls) and select Download with scp from hostname**, and iTerm2 will 
+#   download the file for you.
+# - [Upload with scp]: If you drop a file (e.g., from Finder) into iTerm2 
+#   while holding the option key, iTerm2 will offer to upload the file via 
+#   scp to the remote host into the directory you were in on the line you 
+#   dropped the file on.
+# - [Cmd history popup] - Shift-Cmd-;
+# - [Recent dir popup] - Cmd-Opt-/
+#
+# You will also have these commands:
+#   imgcat filename - Displays the image inline.
+#   imgls - Shows a directory listing with image thumbnails.
+#   it2api - Command-line utility to manipulate iTerm2.
+#   it2attention start|stop|fireworks - Gets your attention.
+#   it2check - Checks if the terminal is iTerm2.
+#   it2copy [filename] - Copies to the pasteboard.
+#   it2dl filename - Downloads the specified file, saving it in your Downloads folder.
+#   it2setcolor ... - Changes individual color settings or loads a color preset.
+#   it2setkeylabel ... - Changes Touch Bar function key labels.
+#   it2tip - iTerm2 usage tips
+#   it2ul - Uploads a file.
+#   it2universion - Sets the current unicode version.
+#   it2profile - Change iTerm2 session profile on the fly.
 #
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  # Use MacVim for terminal vim
-  #alias vim="mvim"
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
