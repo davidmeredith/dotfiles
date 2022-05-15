@@ -119,7 +119,7 @@ SPACESHIP_PROMPT_SEPARATE_LINE=true
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
+export TESTCONTAINERS_RYUK_DISABLED="true"
 
 
 # Preferred editor for local and remote sessions
@@ -140,6 +140,7 @@ export LANG=en_US.UTF-8
 # Example aliases
 alias ic="ibmcloud"
 alias ls="ls -FG"
+alias docker="podman"
 
 # JAVA_HOME and jdk (deprecated by sdkman)
 # http://www.mkyong.com/java/how-to-set-java_home-environment-variable-on-mac-os-x/

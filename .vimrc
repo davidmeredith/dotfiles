@@ -8,7 +8,7 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 
 " I'm going to start moving some config into lua
-lua require('basic')
+"lua require('basic')
 
 
 " Add parent dir to the list of dirs searched for when using gf, :find, :sfind,
@@ -87,7 +87,7 @@ if !exists('g:vscode')
     " :TSInstall <language_to_install>
     " TSInstallInfo 
     ":checkhealth nvim_treesitter
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
     " nvim-tree
     "Plug 'kyazdani42/nvim-web-devicons' " for file icons
@@ -136,27 +136,27 @@ call plug#end()
 " Remaps (ensure leader key is mapped before defining it)
 let mapleader = ' '
 
-" Treesitter 
-" Treesitter folding
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-" Treesitter highlighting
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    custom_captures = {
-      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-      ["foo.bar"] = "Identifier",
-    },
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
-EOF
+"" Treesitter 
+"" Treesitter folding
+"set foldmethod=expr
+"set foldexpr=nvim_treesitter#foldexpr()
+"" Treesitter highlighting
+"lua <<EOF
+"require'nvim-treesitter.configs'.setup {
+"  highlight = {
+"    enable = true,
+"    custom_captures = {
+"      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+"      ["foo.bar"] = "Identifier",
+"    },
+"    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+"    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+"    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+"    -- Instead of true it can also be a list of languages
+"    additional_vim_regex_highlighting = false,
+"  },
+"}
+"EOF
 
 
 " default updatetime 4000ms is not good for async update (from signify repo)
