@@ -165,8 +165,8 @@ PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}"
 export PATH
 
 # Cheatsheet https://github.com/chubin/cheat.sh#usage
-PATH="$HOME/myprogs/cheatsheet:${PATH}"
-export PATH
+#PATH="$HOME/myprogs/cheatsheet:${PATH}"
+#export PATH
 
 
 # Deprecated by pyenv - Setting PATH for Python 3.8
@@ -180,7 +180,10 @@ export PATH
 # ===========================
 # https://github.com/pyenv/
 # https://github.com/pyenv/pyenv-virtualenv to allow easy venv with pyenv
-# Manage multiple python versions with pyenv and correctly simlink pip/pip3 depending on py version
+#
+# Pyenv 
+# ========
+# used to manage multiple python versions and correctly simlink pip/pip3 depending on py version
 # $ brew upgrade pyenv
 # $ brew upgrade pyenv-virtualenv 
 # For useful guide see: https://realpython.com/intro-to-pyenv/
@@ -195,7 +198,10 @@ export PATH
 # $ pyenv global <version> 
 # $ pyenv virtualenv-delete <env>
 #
-# Pyenv Virtualenv useful commands:
+# Pyenv Virtualenv
+# # ==============
+# Virtualenv used to create isolated project-based environments for installing
+# project deps and using pyenv to manage the python version for the project. 
 #
 # List existing virtualenvs:
 #    $ pyenv virtualenvs 
@@ -369,5 +375,5 @@ export SDKMAN_DIR="${HOME}/.sdkman"
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/david.meredith/.rd/bin:$PATH"
+#export PATH="/Users/david.meredith/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
