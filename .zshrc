@@ -1,7 +1,25 @@
-# After modifications reload by sourcing this file
+# Interactive Shell Settings 
+# ==========================
+# If you login to bash/zsh using an xterm/iterm/putty etc, then 
+# the session is both a login shell and an interactive one. 
+# If you then type 'bash | zsh' while logged in or run a shell script, it starts 
+# an interactive shell, but it is not a login shell.
+# So, the .zshrc/.bashrc files are also run every time you request a new 
+# interactive shell. Normally variables, aliases or functions are put in .zshrc.
+# using the setopt and unsetopt commands. 
+#
+# So, a login shell only differs from any other shell (interactive shell) by the 
+# fact that one or more initial setup scripts (resources) are loaded on 
+# startup, typically named with "profile" in their name (.zprofile). 
+# In '.zprofile' are basic settings that are are dervied to subsequently opened 
+# shells (so they only need to be defined once).
+
+# After modifications reload by sourcing this file with:
 # source ~/.zshrc
+
 # Make sure zplug is installed
 if [[ ! -d ~/.zplug ]]; then
+    echo "cloning zplug"
     git clone https://github.com/zplug/zplug ~/.zplug && \
         source ~/.zplug/init.zsh && \
         zplug update
@@ -11,6 +29,7 @@ fi
 
 # zsh-autosuggestions
 if [[ ! -d ~/.zsh/zsh-autosuggestions ]]; then
+    echo "cloning zsh-autosuggestions"
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 fi
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -74,10 +93,10 @@ zplug load
 
 
 SPACESHIP_PROMPT_ORDER=(
-  time          # Time stamps section
+#  time          # Time stamps section
   user          # Username section
   dir           # Current directory section
-  host          # Hostname section
+#  host          # Hostname section
   git           # Git section (git_branch + git_status)
 #  hg            # Mercurial section (hg_branch  + hg_status)
   package       # Package version
@@ -91,7 +110,7 @@ SPACESHIP_PROMPT_ORDER=(
 #  rust          # Rust section
 #  haskell       # Haskell Stack section
 #  julia         # Julia section
-  docker        # Docker section
+#  docker        # Docker section
 #  aws           # Amazon Web Services section
   venv          # virtualenv section
 #  conda         # conda virtualenv section
@@ -168,11 +187,6 @@ export PATH
 #PATH="$HOME/myprogs/cheatsheet:${PATH}"
 #export PATH
 
-
-# Deprecated by pyenv - Setting PATH for Python 3.8
-# The original version is saved in .bash_profile.pysave
-#PATH="/Library/Frameworks/Python.framework/Versions/3.8/bin:${PATH}"
-#export PATH
 
 
 # ===========================
@@ -290,7 +304,7 @@ alias vim="nvim"
 
 # Misc zsh config
 export HISTFILE=~/.zsh_history
-export HISTSIZE=10000000
+export HISTSIZE=500000
 export SAVEHIST=$HISTSIZE
 # While searching with Ctrl+R, Stepping through the history with UP and DOWN keys 
 # becomes a bit annoying if the same command comes up again and again. A better 
