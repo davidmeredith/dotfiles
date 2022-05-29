@@ -158,7 +158,7 @@ export TESTCONTAINERS_RYUK_DISABLED="true"
 #
 # Example aliases
 alias ic="ibmcloud"
-alias ls="ls -FG"
+alias ls="ls -FG --color=auto"
 alias docker="podman"
 
 # JAVA_HOME and jdk (deprecated by sdkman)

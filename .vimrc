@@ -1,7 +1,7 @@
-" Dave's vim config ('~/.dotfiles/.vimrc')
+" Dave's vim config ~/.dotfiles/.vimrc
 " Symlinks to this file:
-"  '~/.config/nvim/init.vim' (nvim)
-"  '~/.vimrc' (for gvim & ideavim)
+"  ~/.config/nvim/init.vim    - for nvim
+"  ~/.vimrc   - for gvim & ideavim
 
 " Note ~/.vim dir is a synmlink: ~/.vim@ -> /Users/davidmeredith/.dotfiles/vim
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
@@ -82,12 +82,12 @@ if !exists('g:vscode')
     Plug 'mbbill/undotree'
 
     " Treesitter
-    " Useful commands:
+    " Useful commands
     " :h nvim-treesitter-commands
     " :TSInstall <language_to_install>
-    " TSInstallInfo 
+    " TSInstallInfo
     ":checkhealth nvim_treesitter
-    "Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
     " nvim-tree
     "Plug 'kyazdani42/nvim-web-devicons' " for file icons
@@ -136,27 +136,36 @@ call plug#end()
 " Remaps (ensure leader key is mapped before defining it)
 let mapleader = ' '
 
-"" Treesitter 
-"" Treesitter folding
+" Treesitter 
+" Treesitter folding
 "set foldmethod=expr
 "set foldexpr=nvim_treesitter#foldexpr()
-"" Treesitter highlighting
-"lua <<EOF
-"require'nvim-treesitter.configs'.setup {
-"  highlight = {
-"    enable = true,
-"    custom_captures = {
-"      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-"      ["foo.bar"] = "Identifier",
-"    },
-"    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-"    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-"    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-"    -- Instead of true it can also be a list of languages
-"    additional_vim_regex_highlighting = false,
-"  },
-"}
-"EOF
+" Treesitter highlighting
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"  
+  ensure_installed = {"java", "lua", "kotlin"}, 
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- List of parsers to ignore installing (for "all")
+  ignore_install = { "javascript" },
+
+  highlight = {
+    enable = true,
+    --custom_captures = {
+      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+    --  ["foo.bar"] = "Identifier",
+    --},
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = true,
+  },
+}
+EOF
 
 
 " default updatetime 4000ms is not good for async update (from signify repo)
