@@ -56,7 +56,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 # oh-my-zsh features 
 # Load completion library for those sweet [tab] squares
 zplug "lib/completion", from:oh-my-zsh
-zplug "plugins/git",   from:oh-my-zsh
+zplug "plugins/git", from:oh-my-zsh
 
 # softmoth's vim zsh key bindings
 # Add vars to .zshrc, before this plugin is loaded.
@@ -112,7 +112,7 @@ SPACESHIP_PROMPT_ORDER=(
 #  julia         # Julia section
 #  docker        # Docker section
 #  aws           # Amazon Web Services section
-  venv          # virtualenv section
+#  venv          # virtualenv section
 #  conda         # conda virtualenv section
   pyenv         # Pyenv section
   # dotnet        # .NET section
@@ -138,6 +138,8 @@ SPACESHIP_PROMPT_SEPARATE_LINE=true
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+# Java Testcontainers lib can use podman instead of docker, but you need 
+# to disable RYUK which is podman specific (is used to clean up containers)
 export TESTCONTAINERS_RYUK_DISABLED="true"
 
 
@@ -159,7 +161,9 @@ export TESTCONTAINERS_RYUK_DISABLED="true"
 # Example aliases
 alias ic="ibmcloud"
 alias ls="ls -FG --color=auto"
-alias docker="podman"
+alias gitadog="git log --all --decorate --oneline --graph"
+# use 'unalias docker' to unset
+#alias docker="podman"
 
 # JAVA_HOME and jdk (deprecated by sdkman)
 # http://www.mkyong.com/java/how-to-set-java_home-environment-variable-on-mac-os-x/
@@ -180,8 +184,8 @@ alias docker="podman"
 #export PATH="$HOME/bin:/usr/local/bin:$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/MacVim.app/Contents/bin:/usr/local/sass/dart-sass"
 
 # PostgressApp 
-PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}"
-export PATH
+#PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}"
+#export PATH
 
 # Cheatsheet https://github.com/chubin/cheat.sh#usage
 #PATH="$HOME/myprogs/cheatsheet:${PATH}"
@@ -267,11 +271,16 @@ export PATH
 #     export PATH="$PYENV_ROOT/bin:$PATH"
 #     eval "$(pyenv init --path)"
 #
-#  In .zsch - init pyenv each time you open a terminal:
-#  used to set the pyenv virtualenv from '.python-version' file
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+#  Source this file and pass 'enablePyEnv' arg to init pyenv 
+#if [[ "$1" == "enablepyenv" ]] 
+if [[ "$*" == *"enablepyenv"* ]]
+then
+    echo "Enabling PyEnv"
+    if command -v pyenv 1>/dev/null 2>&1; then
+      eval "$(pyenv init -)"
+      # used to set the pyenv virtualenv from '.python-version' file:
+      eval "$(pyenv virtualenv-init -)"
+    fi
 fi
 #
 # After creating a new venv, 'pip list' should show an empty list of packages 
@@ -286,6 +295,8 @@ fi
 #   pyenv activate <name>
 #   pip install neovim
 # See: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim  
+
+
 
 # nvim
 # =========
@@ -371,9 +382,9 @@ bindkey '^R' history-incremental-search-backward
 #   it2universion - Sets the current unicode version.
 #   it2profile - Change iTerm2 session profile on the fly.
 #
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-fi
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+#fi
 
 
 
@@ -382,12 +393,15 @@ fi
 # see: https://github.com/junegunn/fzf#using-the-finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="${HOME}/.sdkman"
-[[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
-
+if [[ "$*" == *"enablesdkman"* ]]
+then
+    echo "Enabling sdkman"
+    #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+    export SDKMAN_DIR="${HOME}/.sdkman"
+    [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
+fi
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-#export PATH="/Users/david.meredith/.rd/bin:$PATH"
+export PATH="/Users/david.meredith/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
