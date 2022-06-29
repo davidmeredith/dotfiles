@@ -374,6 +374,9 @@ vnoremap <leader>y "*y
 " copy whole file into clipboard
 nnoremap <leader>Y gg"+yG
 
+" Disable quote concealing in JSON files
+let g:vim_json_conceal=0
+
 " netrw
 " :Vex  to open in new v split
 " :Ex   to open in current window
