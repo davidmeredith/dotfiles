@@ -393,13 +393,13 @@ bindkey '^R' history-incremental-search-backward
 # see: https://github.com/junegunn/fzf#using-the-finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-if [[ "$*" == *"enablesdkman"* ]]
-then
-    echo "Enabling sdkman"
+#if [[ "$*" == *"enablesdkman"* ]]
+#then
+#    echo "Enabling sdkman"
     #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
     export SDKMAN_DIR="${HOME}/.sdkman"
     [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
-fi
+#fi
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
