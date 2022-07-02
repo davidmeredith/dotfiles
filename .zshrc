@@ -393,6 +393,15 @@ bindkey '^R' history-incremental-search-backward
 # see: https://github.com/junegunn/fzf#using-the-finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+
+# Some bindkeys
+# -s option is used to translate the input string to output string so that 
+# when you press the shortcut, it is replaced with the command you want to run,
+# (translates to 'substitute'). Enter can be ran with \n or ^M 
+bindkey -s '^f' 'fzf\n'
+bindkey -s '^o' 'nvim $(fzf)^M'
+
+
 #if [[ "$*" == *"enablesdkman"* ]]
 #then
 #    echo "Enabling sdkman"
