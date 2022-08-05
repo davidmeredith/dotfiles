@@ -144,7 +144,7 @@ let mapleader = ' '
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"  
-  ensure_installed = {"java", "lua", "kotlin", "javascript", "python", "json", "typescript", "yaml", "rust", "go", "css", "html"}, 
+  ensure_installed = {"java", "lua", "kotlin", "javascript", "python", "json", "typescript", "yaml", "rust", "go", "css", "html", "fish"}, 
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,

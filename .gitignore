@@ -10,3 +10,6 @@
 .*.swo
 .swp
 .swo
+
+.vim/
+vim/
