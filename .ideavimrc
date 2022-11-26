@@ -1,0 +1,36 @@
+" sourcing my .vimrc seems to cause too many conflicts:
+"source ~/.vimrc
+
+""" Map leader to space ---------------------
+let mapleader=" "
+
+""" Plugins  --------------------------------
+set surround
+"set multiple-cursors
+set commentary
+"set argtextobj
+"set easymotion
+"set textobj-entire
+"set ReplaceWithRegister
+
+""" Common settings -------------------------
+set showmode
+set hls
+" so - scrolloff - minimum number of lines above and below the cursor
+set so=5
+set incsearch
+set smartcase
+" set number
+set nu
+set relativenumber
+"show (partial) command in the status bar
+set showcmd
+" Sync IJ bookmarks and Vim marks:
+set ideamarks
+" visualbell instead of beeping"
+set visualbell
+
+" Quick Documentation (not only for java, all languages)
+:map <leader>x <Action>(QuickJavaDoc)
+
+inoremap jj <Esc>

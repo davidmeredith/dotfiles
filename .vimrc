@@ -232,7 +232,6 @@ set shiftwidth=4
 set expandtab
 set hlsearch
 set spelllang=en_gb
-set nocompatible
 set number                     " Show current line number
 set relativenumber             " Show relative line numbers
 set hidden
@@ -242,7 +241,7 @@ set noswapfile
 set nobackup
 set undodir=~/.vim/undodir
 set undofile
-set scrolloff=8
+set scrolloff=5
 
 set signcolumn=yes
 set colorcolumn=80

@@ -254,7 +254,15 @@ alias gitadog="git log --all --decorate --oneline --graph"
 # See: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim  
 
 
+# Open chrome tabs from CLI to simplify following example:
+# open --new -a "Google Chrome" --args "duckduckgo.com"
+chrome_open_tab() {
+  open --new -a "Google Chrome" --args $@
+}
 
+chrome_open_window() {
+  open --new -a "Google Chrome" --args --new-window $@
+}
 
 
 #if [[ "$*" == *"enablesdkman"* ]]
