@@ -26,13 +26,15 @@ fi
 
 
 echo "Creating configuration symlinks..."
-create_symlink .vimrc
 #create_symlink .aliases
-rm -rf ~/.vim && create_symlink vim .vim
 
+# vim (neovim config actually)
+create_symlink .vimrc
+rm -rf ~/.vim && create_symlink vim .vim
 mkdir -p ~/.config/nvim
 ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
 
+# zsh
 create_symlink .zshrc
 create_symlink .profile
 # Install zsh_machine symlink if it exists.
@@ -41,34 +43,30 @@ create_symlink .profile
 # zim 
 # https://zimfw.sh/#install
 create_symlink .zimrc
-#if [ -x "$(command -v apt-get)" ]; then
-#  sudo curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-#else
-#  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-#fi 
 
-# Create link for tmux:
+# tmux
 # ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 create_symlink .tmux.conf
 
+# ideavim
 # ln -s ~/.dotfiles/.ideavimrc ~/.ideavimrc
 create_symlink .ideavimrc
 
-mv ~/.config/fish ~/.config/fish_backup 2> /dev/null || true
-create symlink fish .config/fish
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    curl -L https://iterm2.com/shell_integration/fish \
-    -o ~/.iterm2_shell_integration.fish
-    # For tmux powerline, you need to ensure 'Use built-in powerline glyphs' is 
-    # checked in iterm preferences | Profiles | Text
-fi
+# fish (don't use anymore)
+#mv ~/.config/fish ~/.config/fish_backup 2> /dev/null || true
+#create symlink fish .config/fish
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#    # macOS
+#    curl -L https://iterm2.com/shell_integration/fish \
+#    -o ~/.iterm2_shell_integration.fish
+#    # For tmux powerline, you need to ensure 'Use built-in powerline glyphs' is 
+#    # checked in iterm preferences | Profiles | Text
+#fi
 
 echo "Done."
 echo "Installing tools..."
 
-
+# Prefer not to use linuxbrew anymore
 # install brew if not not available (eg on debian) 
 #if ! [ -x "$(command -v brew)" ]; then
 #    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -81,8 +79,7 @@ echo "Installing tools..."
 #    fi
 #fi
 
-
-# Now install tools using brew 
+# Mac via brew 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     brew install \
         fish \
@@ -104,18 +101,13 @@ fi
 
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
-
+# Ubuntu via apt
 if [ -x "$(command -v apt-get)" ]; then
     curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
     apt install neovim fzf ripgrep jq bat hexyl 
 fi 
 
 echo "Done."
-
-#echo "[3/3] Setting up neovim..."
-#nvim +'hi NormalFloat guibg=#1e222a' +PackerSync
-#echo "[3/3] Done."
-
 
 
 
@@ -127,8 +119,7 @@ cd -
 echo "Done."
 
 
-
 echo
-echo "Finished installing dotfiles. You may need to restart your shell for changes to take effect."
+echo "Finished installing dotfiles. Restart your shell for changes to take effect."
 
 
