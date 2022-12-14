@@ -12,23 +12,13 @@ create_symlink() {
     fi
 }
 
-# install zsh if on debian (zsh now default on mac)
-if [ -x "$(command -v apt-get)" ]; then
-    echo "Installing zsh ..."
-    apt -y install build-essential unzip zip zsh
-    # Don't change default shell in this script as we use bash later on
-    #chsh -s $(which zsh) 
-fi
-
-if [ -x "$(command -v apt-get)" ]; then
-    curl -s "https://get.sdkman.io" | bash
-fi
 
 
 echo "Creating configuration symlinks..."
 #create_symlink .aliases
 
-# vim (neovim config actually)
+# vim 
+# (neovim config actually)
 create_symlink .vimrc
 rm -rf ~/.vim && create_symlink vim .vim
 mkdir -p ~/.config/nvim
@@ -64,6 +54,7 @@ create_symlink .ideavimrc
 #fi
 
 echo "Done."
+
 echo "Installing tools..."
 
 # Prefer not to use linuxbrew anymore
@@ -101,23 +92,29 @@ fi
 
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
+
 # Ubuntu via apt
 if [ -x "$(command -v apt-get)" ]; then
+    sudo apt -y install build-essential unzip zip zsh
     curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-    apt install neovim fzf ripgrep jq bat hexyl 
+    sudo apt install neovim fzf ripgrep jq bat hexyl tmux 
+    sudo curl -s "https://get.sdkman.io" | zsh 
 fi 
 
 echo "Done."
 
 
-
-echo "Setting up vim and plugins..."
+echo "Setting up vim plugins..."
 vim +PlugInstall +qall
 #cd vim/plugged/YouCompleteMe
 #./install.py --all
 cd -
 echo "Done."
 
+echo "Setting up tmux plugins"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+tmux source ~/.tmux.conf
+echo "Done - remember to Press prefix + I (capital i, as in Install) to install tmux plugins."
 
 echo
 echo "Finished installing dotfiles. Restart your shell for changes to take effect."
