@@ -107,7 +107,7 @@ fi
 
 if [ -x "$(command -v apt-get)" ]; then
     curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-    apt install neovim fzf ripgrep
+    apt install neovim fzf ripgrep jq bat hexyl 
 fi 
 
 echo "Done."
