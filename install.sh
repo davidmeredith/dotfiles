@@ -21,9 +21,7 @@ if [ -x "$(command -v apt-get)" ]; then
 fi
 
 if [ -x "$(command -v apt-get)" ]; then
-    curl -s "https://get.sdkman.io"
-else 
-    curl -s "https://get.sdkman.io"
+    curl -s "https://get.sdkman.io" | bash
 fi
 
 
@@ -43,11 +41,11 @@ create_symlink .profile
 # zim 
 # https://zimfw.sh/#install
 create_symlink .zimrc
-if [ -x "$(command -v apt-get)" ]; then
-  sudo curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-else
-  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-fi 
+#if [ -x "$(command -v apt-get)" ]; then
+#  sudo curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+#else
+#  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+#fi 
 
 # Create link for tmux:
 # ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
@@ -72,37 +70,45 @@ echo "Installing tools..."
 
 
 # install brew if not not available (eg on debian) 
-if ! [ -x "$(command -v brew)" ]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    # Homebrew post-installation steps.
-    if test -e /home/linuxbrew/.linuxbrew/bin/brew; then
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    else
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi
-fi
+#if ! [ -x "$(command -v brew)" ]; then
+#    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#
+#    # Homebrew post-installation steps.
+#    if test -e /home/linuxbrew/.linuxbrew/bin/brew; then
+#        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+#    else
+#        eval "$(/opt/homebrew/bin/brew shellenv)"
+#    fi
+#fi
 
 
 # Now install tools using brew 
-brew install \
-    fish \
-    neovim \
-    exa \
-    starship \
-    jq \
-    bat \
-    fzf \
-    hexyl \
-    tmux \
-    ripgrep \
-    git-delta \
-    go-task/tap/go-task \
-    tealdeer
-    
-$(brew --prefix)/opt/fzf/install
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install \
+        fish \
+        neovim \
+        exa \
+        starship \
+        jq \
+        bat \
+        fzf \
+        hexyl \
+        tmux \
+        ripgrep \
+        git-delta \
+        go-task/tap/go-task \
+        tealdeer
+        
+    $(brew --prefix)/opt/fzf/install
+fi
 
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+
+
+if [ -x "$(command -v apt-get)" ]; then
+    curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+    apt install neovim fzf ripgrep
+fi 
 
 echo "Done."
 
