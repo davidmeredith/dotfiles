@@ -136,36 +136,36 @@ call plug#end()
 " Remaps (ensure leader key is mapped before defining it)
 let mapleader = ' '
 
-" Treesitter 
-" Treesitter folding
-"set foldmethod=expr
-"set foldexpr=nvim_treesitter#foldexpr()
-" Treesitter highlighting
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all"  
-  ensure_installed = {"java", "lua", "kotlin", "javascript", "python", "json", "typescript", "yaml", "rust", "go", "css", "html", "fish"}, 
-
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- List of parsers to ignore installing (for "all")
-  ignore_install = { },
-
-  highlight = {
-    enable = true,
-    --custom_captures = {
-      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-    --  ["foo.bar"] = "Identifier",
-    --},
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = true,
-  },
-}
-EOF
+"" Treesitter 
+"" Treesitter folding
+""set foldmethod=expr
+""set foldexpr=nvim_treesitter#foldexpr()
+"" Treesitter highlighting
+"lua <<EOF
+"require'nvim-treesitter.configs'.setup {
+"  -- A list of parser names, or "all"  
+"  ensure_installed = {"java", "lua", "kotlin", "javascript", "python", "json", "typescript", "yaml", "rust", "go", "css", "html", "fish"}, 
+"
+"  -- Install parsers synchronously (only applied to `ensure_installed`)
+"  sync_install = false,
+"
+"  -- List of parsers to ignore installing (for "all")
+"  ignore_install = { },
+"
+"  highlight = {
+"    enable = true,
+"    --custom_captures = {
+"      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+"    --  ["foo.bar"] = "Identifier",
+"    --},
+"    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+"    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+"    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+"    -- Instead of true it can also be a list of languages
+"    additional_vim_regex_highlighting = true,
+"  },
+"}
+"EOF
 
 
 " default updatetime 4000ms is not good for async update (from signify repo)

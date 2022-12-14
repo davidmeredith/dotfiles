@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Inspired from Drew Silcock, with thanks.
 
 create_symlink() {
     echo "... $1"
@@ -15,14 +14,20 @@ create_symlink() {
 
 # install zsh if on debian (zsh now default on mac)
 if [ -x "$(command -v apt-get)" ]; then
-    echo "[0/3] Installing zsh ..."
-    sudo apt-get install build-essential
-    sudo apt install zsh
-    # Don't bother chaning default shell in this script as we use bash later on
+    echo "Installing zsh ..."
+    apt -y install build-essential unzip zip zsh
+    # Don't change default shell in this script as we use bash later on
     #chsh -s $(which zsh) 
 fi
 
-echo "[1/3] Creating configuration symlinks..."
+if [ -x "$(command -v apt-get)" ]; then
+    curl -s "https://get.sdkman.io"
+else 
+    curl -s "https://get.sdkman.io"
+fi
+
+
+echo "Creating configuration symlinks..."
 create_symlink .vimrc
 #create_symlink .aliases
 rm -rf ~/.vim && create_symlink vim .vim
@@ -38,14 +43,17 @@ create_symlink .profile
 # zim 
 # https://zimfw.sh/#install
 create_symlink .zimrc
-curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-
+if [ -x "$(command -v apt-get)" ]; then
+  sudo curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+else
+  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+fi 
 
 # Create link for tmux:
 # ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 create_symlink .tmux.conf
 
-# ln -s ~/.dotfiles/.vimrc ~/.ideavimrc
+# ln -s ~/.dotfiles/.ideavimrc ~/.ideavimrc
 create_symlink .ideavimrc
 
 mv ~/.config/fish ~/.config/fish_backup 2> /dev/null || true
@@ -59,8 +67,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # checked in iterm preferences | Profiles | Text
 fi
 
-echo "[1/3] Done."
-echo "[2/3] Installing tools..."
+echo "Done."
+echo "Installing tools..."
 
 
 # install brew if not not available (eg on debian) 
@@ -96,7 +104,7 @@ $(brew --prefix)/opt/fzf/install
 
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
-echo "[2/3] Done."
+echo "Done."
 
 #echo "[3/3] Setting up neovim..."
 #nvim +'hi NormalFloat guibg=#1e222a' +PackerSync
@@ -105,12 +113,12 @@ echo "[2/3] Done."
 
 
 
-echo "[3/3] Setting up vim and plugins..."
+echo "Setting up vim and plugins..."
 vim +PlugInstall +qall
 #cd vim/plugged/YouCompleteMe
 #./install.py --all
 cd -
-echo "[3/3] Done."
+echo "Done."
 
 
 

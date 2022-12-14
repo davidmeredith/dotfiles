@@ -19,8 +19,8 @@ setopt HIST_IGNORE_ALL_DUPS
 # Input/output
 #
 
-# Set editor default keymap to emacs (`-e`) or vi (`-v`)
-bindkey -v
+# Set zsh VI mode - emacs (`-e`) or vi (`-v`)
+#bindkey -v
 
 # Prompt for spelling correction of commands.
 #setopt CORRECT
