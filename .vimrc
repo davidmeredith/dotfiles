@@ -390,7 +390,7 @@ let g:netrw_winsize = 25
 let g:netrw_browse_split = 0
 " use tree view (when in Ex, hit 'i' to cycle through view modes)
 let g:netrw_liststyle = 1
-let g:netrw_banner = 0
+let g:netrw_banner = 1
 
 
 " If you use virtual environments putting these varibles in your config will 

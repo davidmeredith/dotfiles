@@ -160,10 +160,37 @@ alias gitadog="git log --all --decorate --oneline --graph"
 # Pyenv 
 # ========
 # used to manage multiple python versions and correctly simlink pip/pip3 depending on py version
+# Basic flow is:
+#   * install pyenv-installer from (also installs pyenv-virtualenv): https://github.com/pyenv/pyenv-installer
+#   * configure your environment and path to init pyenv and virtualenv
+#   * list available versions of python
+#   * install required version of python 
+#   * check pyenv python has been installed and is first in your path: `which python`
+#   * create a new virtualenv for your project
+#   * activate your virtualenv 
+#
+# ```
+#  pyenv install --list | grep '3.8'
+#  pyenv install 3.8.16
+#  which python
+#  /home/ubuntu/.pyenv/shims/python  
+#
+#  pyenv virtualenv 3.8.16 .venv
+#  pyenv virtualenvs
+#  pyenv activate .venv
+#  which python
+#  /home/ubuntu/.pyenv/shims/python  
+#  (.venv)
+# ```
+#
+# Install
+# =======
+# For useful guide see: https://realpython.com/intro-to-pyenv/
 # $ brew upgrade pyenv
 # $ brew upgrade pyenv-virtualenv 
-# For useful guide see: https://realpython.com/intro-to-pyenv/
 #
+# Useful commands
+# ================
 # Pyenv useful commands: 
 #  $ which python
 #  $ /Users/davidmeredith/.pyenv/shims/python
@@ -229,7 +256,7 @@ alias gitadog="git log --all --decorate --oneline --graph"
 #     export PATH="$PYENV_ROOT/bin:$PATH"
 #     eval "$(pyenv init --path)"
 #
-#  Source this file and pass 'enablePyEnv' arg to init pyenv 
+#  Source this file and pass 'enablePyEnv' arg to init pyenv:
 #if [[ "$*" == *"enablepyenv"* ]]
 #then
 #    echo "Enabling PyEnv"
