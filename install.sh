@@ -17,12 +17,12 @@ create_symlink() {
 echo "Creating configuration symlinks..."
 #create_symlink .aliases
 
-# vim 
-# (neovim config actually)
-create_symlink .vimrc
-rm -rf ~/.vim && create_symlink vim .vim
+# neovim 
+#create_symlink .vimrc
+#rm -rf ~/.vim && create_symlink vim .vim
 mkdir -p ~/.config/nvim
-ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
+#ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
+ln -s ~/.dotfiles/init.lua ~/.config/nvim/init.lua
 
 # zsh
 create_symlink .zshrc
