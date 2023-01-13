@@ -13,15 +13,18 @@
 # In this file are basic settings that are are dervied to subsequently opened 
 # shells (so they only need to be defined once).
 #
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export PYENV_ROOT="$HOME/.pyenv"
-# Put pyenv first in your search path so that the OS will find 
-# pyenv's python before any other pythons
-export PATH="$PYENV_ROOT/bin:$PATH"
-#eval "$(pyenv init --path)"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
-# OpenShift cli tooling
-export PATH="$HOME/bin/oc-4.10.20-macosx:$PATH"
+# export PYENV_ROOT="$HOME/.pyenv"
+# # Put pyenv first in your search path so that the OS will find 
+# # pyenv's python before any other pythons
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# #eval "$(pyenv init --path)"
+
+# # OpenShift cli tooling
+# export PATH="$HOME/bin/oc-4.10.20-macosx:$PATH"
 
 

@@ -26,7 +26,7 @@ ln -s ~/.dotfiles/init.lua ~/.config/nvim/init.lua
 
 # zsh
 create_symlink .zshrc
-create_symlink .profile
+create_symlink .zprofile
 # Install zsh_machine symlink if it exists.
 # test -e .zsh_machine && create_symlink .zsh_machine
 

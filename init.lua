@@ -1,5 +1,5 @@
 -- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
--- Install packer
+-- Automatically install and setup packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -7,6 +7,12 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
   vim.cmd [[packadd packer.nvim]]
 end
+-- Note, you can also use the following command (with packer bootstrapped) to have packer setup your 
+-- configuration (or simply run updates) and close once all operations are completed. I had to do this 
+-- in order to get the nvim-surround plugin installe/working ok: 
+--   
+-- $nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+-- 
 
 require('packer').startup(function(use)
   -- Package manager
@@ -26,6 +32,16 @@ require('packer').startup(function(use)
       'folke/neodev.nvim',
     },
   }
+
+  use({
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    config = function()
+        require("nvim-surround").setup({
+            -- Configuration here, or leave empty to use defaults
+        })
+    end
+})
 
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -116,8 +132,11 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
+vim.o.smartindent = true
 vim.o.spelllang='en_gb'
 
 -- Decrease update time
@@ -168,6 +187,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.keymap.set('i', 'jj', '<ESC>', {noremap = true, silent = false})
 
 -- Splits
+-- ========
 -- Jump between splits, old vimrc version:
 -- nnoremap <leader>h :wincmd h<CR>
 -- nnoremap <leader>j :wincmd j<CR>
@@ -187,19 +207,43 @@ vim.keymap.set('n', '<leader>[', ':vertical resize -5<CR>', {noremap=true, silen
 vim.keymap.set('n', '<leader>=', ':resize +5<CR>', {noremap=true, silent=true})
 vim.keymap.set('n', '<leader>-', ':resize -5<CR>', {noremap=true, silent=true})
 
+-- Tab navigation 
+-- ===============
+-- Note, this is different to my shell & browser tab navigation remaps (<S-Cmd-]> and <S-Cmd-[>)
+-- nnoremap <S-left>  :tabprevious<CR>
+-- nnoremap <S-right> :tabnext<CR>
+-- nnoremap <C-t>     :tabnew .<CR>
+vim.keymap.set('n', '<S-Left>', ':tabprevious<CR>', {noremap=true, silent=true})
+vim.keymap.set('n', '<S-Right>', ':tabnext<CR>', {noremap=true, silent=true})
+vim.keymap.set('n', '<C-t>', ':tabnew<CR>', {noremap=true, silent=true})
+-- Close tab, but this overwrites <C-ww> for default mapping for jumping between split panes
+-- "nnoremap <C-w>     :tabclose<CR>
+
+-- Buffers 
+-- ========
+-- nnoremap <TAB>  :bnext<CR>
+-- nnoremap <S-TAB>  :bprev<CR>
+vim.keymap.set('n', '<Tab>', ':bnext<CR>', {noremap=true, silent=true})
+vim.keymap.set('n', '<S-Tab>', ':bprev<CR>', {noremap=true, silent=true})
+
+
+
 -- Clean Delete
+-- =============
 -- Delete visual selection into blackhole register without
 -- overwriting default register
 -- vnoremap <leader>d "_d
-vim.keymap.set('v', '<leader>d', '_d', {noremap=true})
+vim.keymap.set('v', '<leader>d', "\"_d", {noremap=true})
 
 -- Clean Delete & Paste 
+-- =====================
 -- Delete visual selection into blackhole register and paste
 -- default register before cursor without overwriting the default reg - great !
 -- vnoremap <leader>p "_dP
-vim.keymap.set('v', '<leader>p', '_dP', {noremap=true})
+vim.keymap.set('v', '<leader>p', "\"_dP", {noremap=true})
 
--- Move visual selection up and down
+-- Move visual selection up & down
+-- =================================
 -- so, for J, move (:m) end of visual selection ('>) one line down then enter
 -- (<CR> / carridage return) and select previous vis selection
 -- vnoremap J :m '>+1<CR>gv=gv
@@ -208,19 +252,22 @@ vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", {noremap=true})
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", {noremap=true})
 
 -- Yank into clipboard 
+-- ====================
 -- nnoremap <leader>y "*y
 -- vnoremap <leader>y "*y
-vim.keymap.set({'n', 'v'}, '<leader>y', '"*y', {noremap=true})
+vim.keymap.set({'n', 'v'}, '<leader>y', "\"*y", {noremap=true})
 
 -- Copy whole file into clipboard
 -- nnoremap <leader>Y gg"+yG
-vim.keymap.set('n', '<leader>Y', 'gg"+yG', {noremap=true})
+vim.keymap.set('n', '<leader>Y', "gg\"*yG", {noremap=true})
 
 
--- Disble quote conceal in JSON files
+-- Disable quote conceal in JSON files
 vim.api.nvim_set_var('vim_json_conceal', 0)
 vim.api.nvim_set_var('netrw_winsize', 25)
 
+-- make open file executable
+vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`

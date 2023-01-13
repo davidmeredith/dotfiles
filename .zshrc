@@ -248,12 +248,11 @@ alias gitadog="git log --all --decorate --oneline --graph"
 # 
 # Pyenv config:
 # ===============
-# See '~/.zprofile' that has the following, note PATH prefix: 
-#     # Set env var that points to the pyenv dir
-#     export PYENV_ROOT="$HOME/.pyenv"
+#    Could also use '~/.zprofile' for PATH edits: 
+     export PYENV_ROOT="$HOME/.pyenv"
 #     # Put pyenv first in your search path so that the OS will find 
 #     # pyenv's python before any other pythons
-#     export PATH="$PYENV_ROOT/bin:$PATH"
+     export PATH="$PYENV_ROOT/bin:$PATH"
 #     eval "$(pyenv init --path)"
 #
 #  Source this file and pass 'enablePyEnv' arg to init pyenv:
@@ -299,6 +298,12 @@ chrome_open_window() {
         export SDKMAN_DIR="${HOME}/.sdkman"
             [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
 #fi
+
+
+# OpenShift cli tooling
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export PATH="$HOME/bin/oc-4.10.20-macosx:$PATH"
+fi
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
