@@ -33,7 +33,7 @@ require('packer').startup(function(use)
     },
   }
 
-  use({
+  use({ -- Surround Plugin
     "kylechui/nvim-surround",
     tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
@@ -41,7 +41,14 @@ require('packer').startup(function(use)
             -- Configuration here, or leave empty to use defaults
         })
     end
-})
+  })
+
+ -- use = { 'junegunn/fzf', run = './install --bin', }
+
+ use { 'ibhagwan/fzf-lua',
+  -- optional for icon support
+  requires = { 'nvim-tree/nvim-web-devicons' }
+}
 
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -109,6 +116,10 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   group = packer_group,
   pattern = vim.fn.expand '$MYVIMRC',
 })
+
+
+-- FZF (not via telescope) 
+vim.api.nvim_set_keymap('n', '<c-P>', "<cmd>lua require('fzf-lua').files()<CR>", { noremap = true, silent = true })
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
