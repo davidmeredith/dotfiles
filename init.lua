@@ -33,7 +33,11 @@ require('packer').startup(function(use)
     },
   }
 
-  use({ -- Surround Plugin
+  -- :UndotreeToggle
+  use('mbbill/undotree')
+
+  -- Surround Plugin
+  use({
     "kylechui/nvim-surround",
     tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
@@ -159,6 +163,10 @@ vim.o.termguicolors = true
 --vim.cmd [[colorscheme onedark]]
 vim.cmd [[colorscheme gruvbox]]
 
+vim.opt.splitright = true
+vim.opt.cursorline = true
+vim.opt.cmdheight = 2
+vim.opt.clipboard = 'unnamedplus'
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -189,7 +197,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-
+vim.keymap.set({'n', 'i', 'v'}, '<F5>', ':UndotreeToggle<CR>', {noremap=true, silent=true})
 
 -- Remap Esc. You need to map these to some infrequent key pair, 
 -- but if you need to type jj in sentences, then you can but just do it slowly. 
@@ -241,7 +249,7 @@ vim.keymap.set('n', '<S-Tab>', ':bprev<CR>', {noremap=true, silent=true})
 
 -- Clean Delete
 -- =============
--- Delete visual selection into blackhole register without
+-- Best shortcut ever, delete visual selection into blackhole register without
 -- overwriting default register
 -- vnoremap <leader>d "_d
 vim.keymap.set('v', '<leader>d', "\"_d", {noremap=true})
