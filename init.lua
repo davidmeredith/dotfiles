@@ -1,3 +1,7 @@
+-- disable netrw at the very start of your init.lua (strongly advised if using nvim.tree)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 -- Automatically install and setup packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
@@ -33,6 +37,17 @@ require('packer').startup(function(use)
     },
   }
 
+  use {
+    'nvim-tree/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons', -- optional, for file icons
+    },
+    tag = 'nightly' -- optional, updated every week. (see issue #1193)
+  }
+
+-- using packer.nvim
+  use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
+
   -- :UndotreeToggle
   use('mbbill/undotree')
 
@@ -52,9 +67,11 @@ require('packer').startup(function(use)
  use { 'ibhagwan/fzf-lua',
   -- optional for icon support
   requires = { 'nvim-tree/nvim-web-devicons' }
-}
+ }
 
-  use { -- Autocompletion
+  -- Autocompletion
+  -- Great tutorial vid: https://www.youtube.com/watch?v=h4g0m0Iwmys&list=WL&index=2&t=163s
+  use {
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
@@ -70,6 +87,10 @@ require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter-textobjects',
     after = 'nvim-treesitter',
   }
+
+  -- VSCode like snippets
+  use "rafamadriz/friendly-snippets"
+
 
   -- Git related plugins
   use 'tpope/vim-fugitive'
@@ -123,7 +144,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 
 
 -- FZF (not via telescope) 
-vim.api.nvim_set_keymap('n', '<c-P>', "<cmd>lua require('fzf-lua').files()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-p>', "<cmd>lua require('fzf-lua').files()<CR>", { noremap = true, silent = true })
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -162,7 +183,7 @@ vim.wo.signcolumn = 'yes'
 vim.o.termguicolors = true
 --vim.cmd [[colorscheme onedark]]
 vim.cmd [[colorscheme gruvbox]]
-
+vim.opt.termguicolors = true
 vim.opt.splitright = true
 vim.opt.cursorline = true
 vim.opt.cmdheight = 2
@@ -288,6 +309,30 @@ vim.api.nvim_set_var('netrw_winsize', 25)
 -- make open file executable
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
+
+require'nvim-web-devicons'.setup {
+ -- your personnal icons can go here (to override)
+ -- you can specify color or cterm_color instead of specifying both of them
+ -- DevIcon will be appended to `name`
+ override = {
+  zsh = {
+    icon = "",
+    color = "#428850",
+    cterm_color = "65",
+    name = "Zsh"
+  }
+ };
+ -- globally enable different highlight colors per icon (default to true)
+ -- if set to false all icons will have the default icon's color
+ color_icons = true;
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+}
+
+
+require("bufferline").setup{}
+
 -- Set lualine as statusline
 -- See `:help lualine.txt`
 require('lualine').setup {
@@ -308,6 +353,25 @@ require('indent_blankline').setup {
   char = '┊',
   show_trailing_blankline_indent = false,
 }
+
+-- nvim.tree
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  view = {
+    width = 30,
+    mappings = {
+      list = {
+        { key = "u", action = "dir_up" },
+      },
+    },
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
 
 -- Gitsigns
 -- See `:help gitsigns.txt`
@@ -399,11 +463,16 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
+
+-- Nvim.tree
+vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<CR>', {noremap=true, silent=true})
+
+
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
+  ensure_installed = { 'html', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -574,8 +643,8 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4), -- b for back
+    ['<C-f>'] = cmp.mapping.scroll_docs(4), -- f for fwd
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -605,6 +674,9 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+-- snippets config for L3MON4D3/LuaSnip
+require("luasnip.loaders.from_vscode").lazy_load()
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
