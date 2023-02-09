@@ -148,8 +148,8 @@ export LANG=en_US.UTF-8
 # to disable RYUK which is podman specific (is used to clean up containers)
 export TESTCONTAINERS_RYUK_DISABLED="true"
 alias vim="nvim"
-alias gitadog="git log --all --decorate --oneline --graph"
-
+alias gitlogadog="git log --all --decorate --oneline --graph"
+alias aptup="sudo apt update && sudo apt upgrade"
 
 # ===========================
 # Pyenv & Pyenv-virtualenv:
