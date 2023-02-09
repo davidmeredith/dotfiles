@@ -11,5 +11,5 @@
 .swp
 .swo
 
-.vim/
-vim/
+.vim/**
+vim/**
