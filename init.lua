@@ -1,3 +1,6 @@
+-- TODO
+-- split into separate files
+
 -- disable netrw at the very start of your init.lua (strongly advised if using nvim.tree)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -45,7 +48,14 @@ require('packer').startup(function(use)
     tag = 'nightly' -- optional, updated every week. (see issue #1193)
   }
 
--- using packer.nvim
+  -- tmux and vim splits navigation using: 
+  -- Ctrl-h => left 
+  -- Ctrl-j => down
+  -- Ctrl-k => up
+  -- Ctrl-l => left
+  -- Ctrl-\  => previous split
+  use('christoomey/vim-tmux-navigator')
+
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
 
   -- :UndotreeToggle
@@ -226,17 +236,18 @@ vim.keymap.set({'n', 'i', 'v'}, '<F5>', ':UndotreeToggle<CR>', {noremap=true, si
 --vim.inoremap = 'jj' '<Esc>'
 vim.keymap.set('i', 'jj', '<ESC>', {noremap = true, silent = false})
 
--- Splits
+-- Splits (use christoomey plugin instead)
 -- ========
 -- Jump between splits, old vimrc version:
 -- nnoremap <leader>h :wincmd h<CR>
 -- nnoremap <leader>j :wincmd j<CR>
 -- nnoremap <leader>k :wincmd k<CR>
 -- nnoremap <leader>l :wincmd l<CR>
-vim.keymap.set('n', '<leader>h', ':wincmd h<CR>', {noremap=true, silent=true})
-vim.keymap.set('n', '<leader>j', ':wincmd j<CR>', {noremap=true, silent=true})
-vim.keymap.set('n', '<leader>k', ':wincmd k<CR>', {noremap=true, silent=true})
-vim.keymap.set('n', '<leader>l', ':wincmd l<CR>', {noremap=true, silent=true})
+--vim.keymap.set('n', '<leader>h', ':wincmd h<CR>', {noremap=true, silent=true})
+--vim.keymap.set('n', '<leader>j', ':wincmd j<CR>', {noremap=true, silent=true})
+--vim.keymap.set('n', '<leader>k', ':wincmd k<CR>', {noremap=true, silent=true})
+--vim.keymap.set('n', '<leader>l', ':wincmd l<CR>', {noremap=true, silent=true})
+
 -- Resize splits, old vimrc version:
 -- nnoremap <leader>[ :vertical resize +5<CR>
 -- nnoremap <leader>] :vertical resize -5<CR>
@@ -479,10 +490,10 @@ require('nvim-treesitter.configs').setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = '<c-space>',
-      node_incremental = '<c-space>',
-      scope_incremental = '<c-s>',
-      node_decremental = '<c-backspace>',
+      init_selection = '<c-space>',  -- TODO check this should be capital C-space
+      node_incremental = '<c-space>',-- TODO check this should be capital C-space
+      scope_incremental = '<c-s>',-- TODO check this should be capital C-space
+      node_decremental = '<c-backspace>',-- TODO check this should be capital C-space
     },
   },
   textobjects = {
