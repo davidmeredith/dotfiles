@@ -1,3 +1,6 @@
+" For ideavim supported plugins see:
+"https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md"
+
 " sourcing my .vimrc seems to cause too many conflicts:
 "source ~/.vimrc
 
@@ -5,9 +8,17 @@
 let mapleader=" "
 
 """ Plugins  --------------------------------
-set surround
+"set surround
+"set commentary
+"set highlightedyank
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'machakann/vim-highlightedyank'
+Plug 'kana/vim-textobj-entire'
+Plug 'vim-scripts/argtextobj.vim'
+Plug 'vim-scripts/ReplaceWithRegister'
+
 "set multiple-cursors
-set commentary
 "set argtextobj
 "set easymotion
 "set textobj-entire
@@ -23,7 +34,7 @@ set ignorecase
 set smartcase
 " set number
 set nu
-set relativenumber
+"set relativenumber
 "show (partial) command in the status bar
 set showcmd
 " Sync IJ bookmarks and Vim marks:
@@ -35,3 +46,7 @@ set visualbell
 :map <leader>x <Action>(QuickJavaDoc)
 
 inoremap jj <Esc>
+" clean delete
+vnoremap <leader>d "_d
+" clean delete and paste
+vnoremap <leader>p "_dP
