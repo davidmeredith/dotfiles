@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Check zsh is the default shell first before running"
+# see: https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH
+
 
 create_symlink() {
     echo "... $1"
@@ -17,7 +20,7 @@ create_symlink() {
 echo "Creating configuration symlinks..."
 #create_symlink .aliases
 
-# neovim 
+# neovim (a recent version is needed, >0.7) 
 #create_symlink .vimrc
 #rm -rf ~/.vim && create_symlink vim .vim
 mkdir -p ~/.config/nvim
@@ -94,11 +97,15 @@ fi
 
 
 # Ubuntu via apt
+# default version of neovim is not adequate on ubuntu
 if [ -x "$(command -v apt-get)" ]; then
     sudo apt -y install build-essential unzip zip zsh
     curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-    sudo apt install neovim fzf ripgrep jq bat hexyl tmux 
-    sudo curl -s "https://get.sdkman.io" | zsh 
+    sudo apt install fzf ripgrep jq bat hexyl tmux 
+    curl -s "https://get.sdkman.io" | zsh 
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    chmod u+x nvim.appimage
+    sudo mv nvim.appimage /usr/bin/nvim
 fi 
 
 echo "Done."
