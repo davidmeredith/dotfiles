@@ -1,35 +1,53 @@
--- TODO
--- split into separate files
+-- This lua config is based on the kickstart repo from TJDevires:
+-- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
+
+-- To backup this nvmim installation use: 
+--    # required
+--    mv ~/.config/nvim ~/.config/nvim.bak
+--    
+--    # optional but recommended
+--    mv ~/.local/share/nvim ~/.local/share/nvim.bak
+--    mv ~/.local/state/nvim ~/.local/state/nvim.bak
+--    mv ~/.cache/nvim ~/.cache/nvim.bak
+
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 
 -- disable netrw at the very start of your init.lua (strongly advised if using nvim.tree)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 -- Automatically install and setup packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+--print(vim.fn.stdpath 'data') -- prints '/Users/david.meredith/.local/share/nvim'
+--print(install_path)          -- prints '/Users/david.meredith/.local/share/nvim/site/pack/packer/start/packer.nvim'
+-- use ':h rtp'  to see the env vars e.g. XDG_CONFIG_HOME and XDG_DATA_HOME 
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   is_bootstrap = true
   vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
   vim.cmd [[packadd packer.nvim]]
 end
--- Note, you can also use the following command (with packer bootstrapped) to have packer setup your 
--- configuration (or simply run updates) and close once all operations are completed. I had to do this 
--- in order to get the nvim-surround plugin installe/working ok: 
---   
--- $nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
--- 
+-- :PackerSync
+-- Note, you can also use the following command (with packer bootstrapped) to have packer setup your configuration (or simply run updates) and close once all operations are completed. I had to do this in order to get the nvim-surround plugin installed/working ok: 
+--    $nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+
 
 require('packer').startup(function(use)
-  -- Package manager
+  -- Packer can manage itself (Package manager)
   use 'wbthomason/packer.nvim'
 
-  use { -- LSP Configuration & Plugins
+  -- LSP Configuration 
+  use {
     'neovim/nvim-lspconfig',
     requires = {
       -- Automatically install LSPs to stdpath for neovim
       'williamboman/mason.nvim',
+      run = "MasonUpdate",
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
@@ -40,6 +58,8 @@ require('packer').startup(function(use)
     },
   }
 
+
+  -- nvim-tree
   use {
     'nvim-tree/nvim-tree.lua',
     requires = {
@@ -86,14 +106,18 @@ require('packer').startup(function(use)
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
 
-  use { -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    run = function()
-      pcall(require('nvim-treesitter.install').update { with_sync = true })
-    end,
-  }
+  -- use { -- Highlight, edit, and navigate code
+  --   'nvim-treesitter/nvim-treesitter',
+  --   run = function()
+  --     pcall(require('nvim-treesitter.install').update { with_sync = true })
+  --   end,
+  -- }
 
-  use { -- Additional text objects via treesitter
+  -- Treesitter
+  -- run TSUpdate on post-install/update hook with neovim command
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  -- Additional text objects via treesitter
+  use {
     'nvim-treesitter/nvim-treesitter-textobjects',
     after = 'nvim-treesitter',
   }
@@ -101,10 +125,10 @@ require('packer').startup(function(use)
   -- VSCode like snippets
   use "rafamadriz/friendly-snippets"
 
-
   -- Git related plugins
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
+  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
   use 'lewis6991/gitsigns.nvim'
 
   use 'gruvbox-community/gruvbox' -- Dave's preferred theme
@@ -112,7 +136,6 @@ require('packer').startup(function(use)
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -203,11 +226,6 @@ vim.opt.clipboard = 'unnamedplus'
 vim.o.completeopt = 'menuone,noselect'
 
 -- [[ Basic Keymaps ]]
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -365,7 +383,15 @@ require('indent_blankline').setup {
   show_trailing_blankline_indent = false,
 }
 
--- nvim.tree
+
+-- Configure NvimTree
+-- :help nvim-tree-mappings
+-- use g? to toggle help while in nvimtree
+-- Ctrl ]   to set the root dir
+-- Toggle hidden/dot files with 'H' (while cursor is on tree)
+-- Ex commands:
+-- :NvimTreeFindFile 
+-- :NvimTreeFindFile!   # to update the root
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
   view = {
@@ -380,7 +406,7 @@ require("nvim-tree").setup({
     group_empty = true,
   },
   filters = {
-    dotfiles = true,
+    dotfiles = false,
   },
 })
 

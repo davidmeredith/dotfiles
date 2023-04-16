@@ -25,7 +25,7 @@ echo "Creating configuration symlinks..."
 #rm -rf ~/.vim && create_symlink vim .vim
 mkdir -p ~/.config/nvim
 #ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
-ln -s ~/.dotfiles/init.lua ~/.config/nvim/init.lua
+ln -s ~/.dotfiles/nvim/init.lua ~/.config/nvim/init.lua
 
 # zsh
 create_symlink .zshrc
