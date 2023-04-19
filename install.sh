@@ -23,9 +23,10 @@ echo "Creating configuration symlinks..."
 # neovim (a recent version is needed, >0.7) 
 #create_symlink .vimrc
 #rm -rf ~/.vim && create_symlink vim .vim
-mkdir -p ~/.config/nvim
+mkdir -p $HOME/.config/nvim
 #ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
-ln -s ~/.dotfiles/nvim/init.lua ~/.config/nvim/init.lua
+#ln -s ~/.dotfiles/nvim/init.lua ~/.config/nvim/init.lua
+
 
 # zsh
 create_symlink .zshrc
@@ -108,6 +109,10 @@ if [ -x "$(command -v apt-get)" ]; then
     sudo mv nvim.appimage /usr/bin/nvim
 fi 
 
+# Vim-pane & tmux-split integration
+# https://github.com/christoomey/vim-tmux-navigator
+#git clone git@github.com:christoomey/vim-tmux-navigator.git ~/.vim/pack/plugins/start/vim-tmux-navigator
+
 echo "Done."
 
 
@@ -121,9 +126,15 @@ echo "Done."
 echo "Setting up tmux plugins"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source ~/.tmux.conf
-echo "Done - remember to Press prefix + I (capital i, as in Install) to install tmux plugins."
 
-echo
-echo "Finished installing dotfiles. Restart your shell for changes to take effect."
+
+echo "Cloning kickstart into ~/.config/nvim"
+git clone https://github.com/davidmeredith/kickstart.nvim.git ~/.config/nvim
+
+echo "Done"
+echo "Required actions:" 
+echo "   - Install tmux plugins with 'tmux-prefix + I' (capital i, as in Install, tmux prefix is likely Ctrl-a)."
+echo "   - Install vim plugins within vim with :Lazy"
+echo "Finished. Restart your shell for changes to take effect."
 
 

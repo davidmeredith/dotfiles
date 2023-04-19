@@ -2,6 +2,7 @@
 -- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 
 -- To backup this nvmim installation use: 
+--
 --    # required
 --    mv ~/.config/nvim ~/.config/nvim.bak
 --    
