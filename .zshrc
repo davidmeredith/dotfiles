@@ -147,7 +147,10 @@ export LANG=en_US.UTF-8
 # Java Testcontainers lib can use podman instead of docker, but you need 
 # to disable RYUK which is podman specific (is used to clean up containers)
 export TESTCONTAINERS_RYUK_DISABLED="true"
+# pipe man pages to bat for colour:
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 alias vim="nvim"
+#alias ls="eza"
 alias gitlogadog="git log --all --decorate --oneline --graph"
 alias aptup="sudo apt update && sudo apt upgrade"
 

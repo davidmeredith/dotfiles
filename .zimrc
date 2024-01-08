@@ -20,6 +20,12 @@ zmodule termtitle
 zmodule utility
 
 zmodule pvenv
+zmodule fzf
+#
+# Theme
+#
+zmodule gitster
+
 
 #
 # Prompt
