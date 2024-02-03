@@ -24,6 +24,7 @@ mkdir -p $HOME/.config/nvim
 #ln -s ~/.dotfiles/nvim/init.lua ~/.config/nvim/init.lua
 
 # Cheat
+# TODO add customisations to cheat
 mkdir -p $HOME/.config/cheat
 ln -s ~/.dotfiles/cheat/conf.yml ~/.config/cheat/conf.yml
 
@@ -89,10 +90,14 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 		ripgrep \
 		hyperfine \
 		git-delta \
+		lazygit \
 		go-task/tap/go-task \
 		tealdeer
 
 	$(brew --prefix)/opt/fzf/install
+
+	#zim
+	curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 fi
 
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
@@ -107,6 +112,11 @@ if [ -x "$(command -v apt-get)" ]; then
 	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 	chmod u+x nvim.appimage
 	sudo mv nvim.appimage /usr/bin/nvim
+
+	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+	tar xf lazygit.tar.gz lazygit
+	sudo install lazygit /usr/local/bin
 fi
 
 # Vim-pane & tmux-split integration
