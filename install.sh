@@ -103,20 +103,28 @@ fi
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
 # Ubuntu via apt
-# default version of neovim is not adequate on ubuntu
+# distro package version of neovim is not adequate on ubuntu
 if [ -x "$(command -v apt-get)" ]; then
-	sudo apt -y install build-essential unzip zip zsh
+	sudo apt -y install build-essential unzip zip zsh libfuse2 zlib1g-dev
 	curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-	sudo apt install fzf ripgrep jq bat hexyl tmux
-	curl -s "https://get.sdkman.io" | zsh
+	sudo apt install fzf ripgrep jq bat hexyl tmux fd-find
+	curl -s "https://get.sdkman.io" | bash
+
 	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 	chmod u+x nvim.appimage
 	sudo mv nvim.appimage /usr/bin/nvim
+	#nvim.appimage
 
+	# lazygit
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
 	tar xf lazygit.tar.gz lazygit
 	sudo install lazygit /usr/local/bin
+	rm lazygit.tar.gz lazygit
+
+	# Change shell to zsh
+	# chsh might not work (had issues on ubuntu), so change the shell to /bin/zsh in /etc/passwd
+	#chsh -s $(which zsh)
 fi
 
 # Vim-pane & tmux-split integration
@@ -136,12 +144,17 @@ echo "Setting up tmux plugins"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source ~/.tmux.conf
 
-# TODO replace this with lazy
-echo "Cloning kickstart into ~/.config/nvim"
-git clone https://github.com/davidmeredith/kickstart.nvim.git ~/.config/nvim
+# Nvim config (used to use kickstart, now use my fork of lazyvim)
+#echo "Cloning kickstart into ~/.config/nvim"
+#git clone https://github.com/davidmeredith/kickstart.nvim.git ~/.config/nvim
+git clone https://github.com/davidmeredith/lazyvim.git ~/.config/nvim
 
 echo "Done"
 echo "Required actions:"
-echo "   - Install tmux plugins with 'tmux-prefix + I' (capital i, as in Install, tmux prefix is likely Ctrl-a)."
+echo "   - Install tmux plugins with 'tmux-prefix + I' (capital i, as in Install, default tmux prefix is Ctrl-b)."
 echo "   - Install vim plugins within vim with :Lazy"
+if [ -x "$(command -v apt-get)" ]; then
+	echo "Shell is: " $SHELL
+	echo "IF above isn't /bin/zsh, update your default shell: 'sudo /etc/passwd' and change to /bin/zsh"
+fi
 echo "Finished. Restart your shell for changes to take effect."
