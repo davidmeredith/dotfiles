@@ -122,6 +122,8 @@ if [ -x "$(command -v apt-get)" ]; then
 	sudo install lazygit /usr/local/bin
 	rm lazygit.tar.gz lazygit
 
+	sudo snap install dust
+
 	# Change shell to zsh
 	# chsh might not work (had issues on ubuntu), so change the shell to /bin/zsh in /etc/passwd
 	#chsh -s $(which zsh)

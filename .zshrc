@@ -152,7 +152,10 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 alias vim="nvim"
 #alias ls="eza"
 alias gitlogadog="git log --all --decorate --oneline --graph"
-alias aptup="sudo apt update && sudo apt upgrade"
+if [ -x "$(command -v apt-get)" ]; then
+  alias aptup="sudo apt update && sudo apt upgrade"
+  alias bat="batcat"
+fi
 
 # ===========================
 # Pyenv & Pyenv-virtualenv:
