@@ -45,8 +45,29 @@ set visualbell
 " Quick Documentation (not only for java, all languages)
 :map <leader>x <Action>(QuickJavaDoc)
 
+" Use ctrl-c as an ide shortcut in normal and visual modes (copy)
+" For handlers see: https://github.com/JetBrains/ideavim/blob/master/doc/sethandler.md
+sethandler <C-C> n-v:ide i:vim
+
 inoremap jj <Esc>
 " clean delete
 vnoremap <leader>d "_d
 " clean delete and paste
 vnoremap <leader>p "_dP
+
+" yank visual selection into * register
+vnoremap <leader>y "*y 
+" yank whole file into * register
+nnoremap <leader>Y gg"+yG
+
+
+" Move visual selection up & down
+" =================================
+" so, for J, move (:m) end of visual selection ('>) one line down then enter
+" (<CR> / carridage return) and select previous vis selection
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+"vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true })
+"vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { noremap = true })
+
+
