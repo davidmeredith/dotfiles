@@ -286,6 +286,18 @@ fi
 # See: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim  
 
 
+# Display meminfo in MB/GB accordingly
+# Usage: echo $HW_TOTALRAM
+# See: https://stackoverflow.com/questions/29811297/how-to-display-proc-meminfo-in-megabytes
+if [ -f "/proc/meminfo" ]; then
+  meminfo () {
+    __meminfo=$(awk '$3=="kB"{if ($2>1024^2){$2=$2/1024^2;$3="GB";} else if ($2>1024){$2=$2/1024;$3="MB";}} 1' /proc/meminfo)
+    echo "$__meminfo" | column -t;
+    unset __meminfo;
+  }
+  HW_TOTALRAM=$(meminfo | awk '/MemTotal/ {printf "%.2f", $2; print $3}')
+fi
+
 # Open chrome tabs from CLI to simplify following example:
 # open --new -a "Google Chrome" --args "duckduckgo.com"
 chrome_open_tab() {
