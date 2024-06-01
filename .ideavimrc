@@ -1,5 +1,6 @@
 " For ideavim supported plugins see:
 "https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md"
+" Use the :action IdeaVim.ReloadVimRc.reload command to reload your config file
 
 " sourcing my .vimrc seems to cause too many conflicts:
 "source ~/.vimrc
@@ -8,6 +9,7 @@
 let mapleader=" "
 
 """ Plugins  --------------------------------
+" Note can use the fully qualified syntax with Plug or set xxx
 "set surround
 "set commentary
 "set highlightedyank
@@ -17,7 +19,8 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'kana/vim-textobj-entire'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'vim-scripts/ReplaceWithRegister'
-
+set which-key
+set notimeout
 "set multiple-cursors
 "set argtextobj
 "set easymotion
@@ -41,12 +44,93 @@ set showcmd
 set ideamarks
 " visualbell instead of beeping"
 set visualbell
+" smart IJ joining for code, is language specific, e.g. if Joining 'Hello World' string on two lines, the join will
+" remove the + and nested " chars. See: https://github.com/JetBrains/ideavim/blob/master/doc/ideajoin-examples.md
+"
+" "Hello" +                 ->       "Hello world"
+ " world!"
+set ideajoin
 
-" Quick Documentation (not only for java, all languages)
-:map <leader>x <Action>(QuickJavaDoc)
+let g:WhichKey_ShowVimActions = "true"
+
+
+" To search for <Action>(values) use :actionlist <search_str>
+
+map <leader>\| <Action>(SplitVertically)
+map <leader>- <Action>(SplitHorizontally)
+map <leader>\" <Action>(SplitHorizontally)
+let g:WhichKeyDesc_window_vsplit = "<leader>| split vertical"
+let g:WhichKeyDesc_window_hsplit = "<leader>- split horizontal"
+let g:WhichKeyDesc_window_hsplit = "<leader>\" split horizontal"
+
+" Close tab/window
+let g:WhichKeyDesc_bufferPrefix = "<leader>b Buffer prefix"
+let g:WhichKeyDesc_windowPrefix = "<leader>w Window prefix"
+map <leader>bd <Action>(CloseContent)
+map <leader>wd <Action>(CloseContent)
+let g:WhichKeyDesc_closeTabWindow = "<leader>bd Close/del window/tab"
+let g:WhichKeyDesc_closeTabWindow = "<leader>wd Close/del window/tab"
+
+" Toggle maximise tab / window
+" Maps to Intellij's HidAllWindows, the default keymap is: Cmd Shift F12
+let g:WhichKeyDesc_ToggleMaximizePrefix = "<leader>m Toggle Maximize Win/Tab Prefix"
+map <leader>mw <Action>(HideAllWindows)
+let g:WhichKeyDesc_HideAllTabWindow = "<leader>mw Toggle maximise current window"
+
+" Simulate Telescope's switch open buffer/window
+"map <leader>, <Action>(RecentFiles)
+map <leader>, <Action>(Switcher)
+let g:WhichKeyDesc_Switcher = "<leader>, Switcher"
+" Simulate Telescope's search
+map <leader>f <Action>(SearchEverywhere)
+let g:WhichKeyDesc_Switcher = "<leader>f Find Everywhere"
+
+
+" Hover K for Quick Documentation (not only for java, all languages)
+map <leader>x <Action>(ShowHoverInfo)
+let g:WhichKeyDesc_hoverInfo = "<leader>x Hover Show Info"
+
+let g:WhichKeyDesc_codeprefix = "<leader>c Code prefix"
+map <leader>ci <Action>(QuickImplementations)
+let g:WhichKeyDesc_quickImpls = "<leader>ci Show Implementations"
+map <leader>cd <Action>(ShowIntentionActions)
+let g:WhichKeyDesc_codeDiagnostics = "<leader>cd Code Diagnostics (IntentionActions)"
+map <leader>cr <Action>(RenameElement)
+let g:WhichKeyDesc_rename = "<leader>cr Code rename"
+
+" Can't find actions for ChrisToomey's move caret/focus to left/right/top/bottom window or panel
+" i.e. (Ctrl-h/k/j/l), so use Switcher instead as above
+"map <C-h> <Action>(Left)
+"map <C-h> <Action>(LeftToolbarSideGroup)
+"map <C-h> <Action>(ExternalSystemView.ActionsToolbar.LeftPane)
+"map <C-j> <Right>
+
+
+" Recreate LazyVim's LSP shortcuts (note NO <leader>, causes some issues in that you need to press Esc )
+" Need to press <ESC> after using next mapping so the dialogue pops up
+let g:WhichKeyDesc_goPrefix = "g Goto LSP"
+map gR <Action>(FindUsages)
+map gr <Action>(ShowUsages)
+let g:WhichKeyDesc_goUsages = "gr Goto Refs/FindUsages"
+let g:WhichKeyDesc_goUsages = "gR Goto show Refs/Usages"
+map gD <Action>(GotoDeclaration)
+let g:WhichKeyDesc_goDeclarations = "gD Goto Declarations"
+map gI <Action>(GotoImplementation)
+let g:WhichKeyDesc_goImpl = "gI Goto Impls"
+
+" Changes
+" next/prev hunk
+map ]c <Action>(VcsShowNextChangeMarker)
+map [c <Action>(VcsShowPrevChangeMarker)
+let g:WhichKeyDesc_nextVcsChange = "]c Next VCS change"
+let g:WhichKeyDesc_prevVcsChange = "[c Prev VCS change"
+let g:WhichKeyDesc_git = "<leader>g Git"
+let g:WhichKeyDesc_gitShowChangeHunk = "<leader>gp Git Preview Hunk"
+map <leader>gp <Action>(VcsShowCurrentChangeMarker)
 
 " Use ctrl-c as an ide shortcut in normal and visual modes (copy)
 " For handlers see: https://github.com/JetBrains/ideavim/blob/master/doc/sethandler.md
+" Hover over code and 'K' also seems to work
 sethandler <C-C> n-v:ide i:vim
 
 inoremap jj <Esc>
