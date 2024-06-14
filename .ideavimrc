@@ -18,7 +18,29 @@ Plug 'tpope/vim-commentary'
 Plug 'machakann/vim-highlightedyank'
 Plug 'kana/vim-textobj-entire'
 Plug 'vim-scripts/argtextobj.vim'
-Plug 'vim-scripts/ReplaceWithRegister'
+"Plug 'vim-scripts/ReplaceWithRegister'
+
+"" NERDTree plugin - emulates NERDTree
+" Basic commands:
+"   <leader>t      Open NERDTree (mapped below)
+"   o or Enter     Open files, directories, bookmarks
+"   go             Open selected, but leave cursor in the NERDTree
+"   i              Open selected file in new horizontal split
+"   gi             Same as i, but leave cursor on NERDTree
+"   s              Open file in new vsplit
+"   gs             Same as s, but leave cursor on NERDTree
+"   t              Open file in new tab
+"   <C-J>          Jump down to next sibling of current selected dir
+"   <C-K>          Jump to previous sibling of current selected dir
+"   R              Recursively refresh the current root
+"   m              Display the NERDTree menu (e.g. for new file, dir etc)
+Plug 'preservim/nerdtree'
+"map <c-n> :NERDTree<CR>
+"map <leader>t :NERDTreeToggle<CR>
+map <leader>t :NERDTree<CR>
+" to exit nerdtree: 'q'
+" to jump from nerdtree back to editor pane: 'Esc'
+
 set which-key
 set notimeout
 "set multiple-cursors
@@ -49,41 +71,91 @@ set visualbell
 "
 " "Hello" +                 ->       "Hello world"
  " world!"
+
 set ideajoin
+set clipboard+=unnamed
+set clipboard+=ideaput
+set scrolloff=5
 
 let g:WhichKey_ShowVimActions = "true"
 
+nnoremap \e :e ~/.ideavimrc<CR>
+nnoremap \r :action IdeaVim.ReloadVimRc.reload<CR>
 
-" To search for <Action>(values) use :actionlist <search_str>
+" -- Example Mappings
+"map <leader>f <Plug>(easymotion-s)
+"map <leader>e <Plug>(easymotion-f)
+"map <leader>d <Action>(Debug)
+"map <leader>r <Action>(RenameElement)
+"map <leader>c <Action>(Stop)
+"map <leader>z <Action>(ToggleDistractionFreeMode)
+"map <leader>s <Action>(SelectInProjectView)
+"map <leader>a <Action>(Annotate)
+"map <leader>h <Action>(Vcs.ShowTabbedFileHistory)
+"map <S-Space> <Action>(GotoNextError)
+"map <leader>b <Action>(ToggleLineBreakpoint)
+"map <leader>o <Action>(FileStructurePopup)
+
+"map <leader>t <Action>(SelectInProjectView)
+map <leader>a <Action>(Annotate)
+map <S-Space> <Action>(GotoNextError)
+map <leader>o <Action>(FileStructurePopup)
+
+nmap <leader>i <Action>(Generate)
+"nnoremap <leader><leader> <C-Tab>
 
 map <leader>\| <Action>(SplitVertically)
 map <leader>- <Action>(SplitHorizontally)
-map <leader>\" <Action>(SplitHorizontally)
-let g:WhichKeyDesc_window_vsplit = "<leader>| split vertical"
+map <leader>" <Action>(SplitHorizontally)
+let gWhichKeyDesc_window_vsplit = "<leader>| split vertical"
 let g:WhichKeyDesc_window_hsplit = "<leader>- split horizontal"
 let g:WhichKeyDesc_window_hsplit = "<leader>\" split horizontal"
+nnoremap <c-m> :action MoveEditorToOppositeTabGroup<CR>
+
+" Simulate Chris Toomey's navigation between windows and splits using same remaps
+sethandler <c-j> a:vim
+sethandler <c-k> a:vim
+sethandler <c-h> a:vim
+sethandler <c-l> a:vim
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <TAB> :action PreviousTab<CR>
+nnoremap <s-TAB> :action NextTab<CR>
+
+nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
+nnoremap <leader>T :action Terminal.OpenInTerminal<CR>
+" TODO: Increase/decrease split/term/project width/height
+"map <c-space>k :action DecrementWindowHeight<CR> "this affects whole IJ window
+"map <c-space>j :action IncrementWindowHeight<CR>
 
 " Close tab/window
+nnoremap <Leader>q :action CloseContent<CR>
+nnoremap <Leader>qa :action CloseAllEditors<CR>
 let g:WhichKeyDesc_bufferPrefix = "<leader>b Buffer prefix"
 let g:WhichKeyDesc_windowPrefix = "<leader>w Window prefix"
 map <leader>bd <Action>(CloseContent)
 map <leader>wd <Action>(CloseContent)
 let g:WhichKeyDesc_closeTabWindow = "<leader>bd Close/del window/tab"
 let g:WhichKeyDesc_closeTabWindow = "<leader>wd Close/del window/tab"
-
 " Toggle maximise tab / window
 " Maps to Intellij's HidAllWindows, the default keymap is: Cmd Shift F12
-let g:WhichKeyDesc_ToggleMaximizePrefix = "<leader>m Toggle Maximize Win/Tab Prefix"
-map <leader>mw <Action>(HideAllWindows)
-let g:WhichKeyDesc_HideAllTabWindow = "<leader>mw Toggle maximise current window"
+map <leader>wm <Action>(HideAllWindows)
+let g:WhichKeyDesc_HideAllTabWindow = "<leader>wm Toggle maximise current window"
 
 " Simulate Telescope's switch open buffer/window
 "map <leader>, <Action>(RecentFiles)
 map <leader>, <Action>(Switcher)
 let g:WhichKeyDesc_Switcher = "<leader>, Switcher"
 " Simulate Telescope's search
-map <leader>f <Action>(SearchEverywhere)
-let g:WhichKeyDesc_Switcher = "<leader>f Find Everywhere"
+let g:WhichKeyDesc_find = "<leader>f Find prefix"
+"map <leader>ff <Action>(GotoFile)
+"let g:WhichKeyDesc_findfiles = "<leader>ff Find Files"
+map <leader>fa <Action>(SearchEverywhere)
+let g:WhichKeyDesc_FindEverywhere = "<leader>fa Find Everywhere"
+map <leader>ff <Action>(GotoFile)
+let g:WhichKeyDesc_FindFiles = "<leader>ff Find Files"
 
 
 " Hover K for Quick Documentation (not only for java, all languages)
@@ -98,39 +170,44 @@ let g:WhichKeyDesc_codeDiagnostics = "<leader>cd Code Diagnostics (IntentionActi
 map <leader>cr <Action>(RenameElement)
 let g:WhichKeyDesc_rename = "<leader>cr Code rename"
 
-" Can't find actions for ChrisToomey's move caret/focus to left/right/top/bottom window or panel
-" i.e. (Ctrl-h/k/j/l), so use Switcher instead as above
-"map <C-h> <Action>(Left)
-"map <C-h> <Action>(LeftToolbarSideGroup)
-"map <C-h> <Action>(ExternalSystemView.ActionsToolbar.LeftPane)
-"map <C-j> <Right>
-
+nmap <leader>i <action>(Generate)
+"nmap <leader>s <action>(QuickChangeScheme)
 
 " Recreate LazyVim's LSP shortcuts (note NO <leader>, causes some issues in that you need to press Esc )
 " Need to press <ESC> after using next mapping so the dialogue pops up
 let g:WhichKeyDesc_goPrefix = "g Goto LSP"
-map gR <Action>(FindUsages)
-map gr <Action>(ShowUsages)
+nmap gR <Action>(FindUsages)
+nmap gr <Action>(ShowUsages)
 let g:WhichKeyDesc_goUsages = "gr Goto Refs/FindUsages"
 let g:WhichKeyDesc_goUsages = "gR Goto show Refs/Usages"
-map gD <Action>(GotoDeclaration)
+nmap gD <Action>(GotoDeclaration)
 let g:WhichKeyDesc_goDeclarations = "gD Goto Declarations"
-map gI <Action>(GotoImplementation)
+nmap gI <Action>(GotoImplementation)
 let g:WhichKeyDesc_goImpl = "gI Goto Impls"
 
-" Changes
+nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+nnoremap <Leader>=  :action ReformatCode<CR>
+"nnoremap <leader>o :action OptimizeImports<CR>
+nnoremap <leader>l :action RecentLocations<CR>
+nnoremap <leader>h  :action LocalHistory.ShowHistory<CR>
+
+" VCS Changes
 " next/prev hunk
+nnoremap ]e :action GotoNextError<CR>
+nnoremap [e :action GotoPreviousError<CR>
 map ]c <Action>(VcsShowNextChangeMarker)
 map [c <Action>(VcsShowPrevChangeMarker)
 let g:WhichKeyDesc_nextVcsChange = "]c Next VCS change"
 let g:WhichKeyDesc_prevVcsChange = "[c Prev VCS change"
-let g:WhichKeyDesc_git = "<leader>g Git"
+
+let g:WhichKeyDesc_git = "<leader>g Git prefix"
+nmap <leader>gM <action>(Git.Menu)
+let g:WhichKeyDesc_gitMenu = "<leader>gM Git Menu"
+nmap <leader>gp <Action>(VcsShowCurrentChangeMarker)
 let g:WhichKeyDesc_gitShowChangeHunk = "<leader>gp Git Preview Hunk"
-map <leader>gp <Action>(VcsShowCurrentChangeMarker)
 
 " Use ctrl-c as an ide shortcut in normal and visual modes (copy)
 " For handlers see: https://github.com/JetBrains/ideavim/blob/master/doc/sethandler.md
-" Hover over code and 'K' also seems to work
 sethandler <C-C> n-v:ide i:vim
 
 inoremap jj <Esc>
@@ -140,7 +217,8 @@ vnoremap <leader>d "_d
 vnoremap <leader>p "_dP
 
 " yank visual selection into * register
-vnoremap <leader>y "*y 
+vnoremap <leader>y "*y
+nnoremap <leader>y "*y
 " yank whole file into * register
 nnoremap <leader>Y gg"+yG
 
