@@ -200,7 +200,7 @@ fi
 # Pyenv useful commands: 
 #  $ which python
 #  $ /Users/davidmeredith/.pyenv/shims/python
-# $ pyenv install --list 
+# $ pyenv install --list   # list available python versions
 # $ pyenv install <version>
 # $ pyenv versions
 # $ pyenv version
@@ -217,10 +217,13 @@ fi
 #
 # Create new virtualenv for your project with the specified pyenv py version: 
 #    $ pyenv virtualenv <pyenv_py_version> <project_venv_folder>
-#    e.g. 'pyenv virtualenv 3.7.1 venv3_7_1_myProject'
+#    e.g. 
+#    pyenv venv 3.7.1 venv3_7_1_myProject
+#    
 #
 # Create new virtualenv with the current pyenv py version: 
 #   $ pyenv virtualenv <new_pyenv_name>
+#   $ pyenv venv <new_pyenv_name>
 #
 # Actviate and Deactivate virtualenv manually:
 #    $ pyenv activate <virtualenv_name>
