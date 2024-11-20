@@ -157,6 +157,16 @@ if [ -x "$(command -v apt-get)" ]; then
   alias bat="batcat"
 fi
 
+# API keys and secrets
+if [[ -f ${HOME}/.mysecrets.sh ]]; then
+  # Source the file if it exists (using . for Zsh)
+  . ${HOME}/.mysecrets.sh
+  echo "Loaded secrets.sh"
+else
+  echo "secrets.sh not found. Skipping..."
+fi
+
+
 # ===========================
 # Pyenv & Pyenv-virtualenv:
 # ===========================
