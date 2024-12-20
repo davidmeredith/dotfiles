@@ -4,7 +4,7 @@
 
 " To find action ids, double shift, then search for 'track action IDs'
 "https://github.com/JetBrains/ideavim/tree/master?tab=readme-ov-file#finding-action-ids
-" or  keymap pattern (E.g. :actionlist extract, :actionlist <C-D)
+" or search for keymap pattern (Eg :actionlist extract, :actionlist <C-D)
 
 "https://towardsdatascience.com/the-essential-ideavim-remaps-291d4cd3971b
 
@@ -219,22 +219,23 @@ let g:WhichKeyDesc_goDeclarations = "gD Goto Declarations"
 let g:WhichKeyDesc_goImpl = "gI Goto Implementations"
 
 
-" Navigate next/previous - I want to use square brackets for navigation, but ideavim has bugs
-" https://youtrack.jetbrains.com/issues?q=project:%20IdeaVim%20square%20bracket
+" Navigate next/previous
+" Use square brackets for navigation next/prev like lazyVim,
+" Warn: ideavim has had bugs in past: https://youtrack.jetbrains.com/issues?q=project:%20IdeaVim%20square%20bracket
 "
-"map ]e <Action>(GotoNextError)
-"map [e <Action>(GotoPreviousError)
+map ]e <Action>(GotoNextError)
+map [e <Action>(GotoPreviousError)
 "nnoremap ]e  :action GotoNextError<CR>
 "nnoremap [e  :action GotoPreviousError<CR>
 "nmap ]e  :action GotoNextError<CR>
 "nmap [e  :action GotoPreviousError<CR>
-nnoremap ge  :action GotoNextError<CR>
-nnoremap gE  :action GotoPreviousError<CR>
+"nnoremap ge  :action GotoNextError<CR>
+"nnoremap gE  :action GotoPreviousError<CR>
 let g:WhichKeyDesc_nextIssue =  " ]e Next Issue"
 let g:WhichKeyDesc_prevIssue = "[e Prev Issue"
 
 " VCS Changes
-" next/prev hunk (note, the square brackets work but not for navigating errors, above)
+" next/prev hunk
 map ]c <Action>(VcsShowNextChangeMarker)
 map [c <Action>(VcsShowPrevChangeMarker)
 let g:WhichKeyDesc_nextVcsChange = "]c Next VCS change"
