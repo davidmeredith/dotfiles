@@ -349,13 +349,14 @@ chrome_open_window() {
 
 
 # OpenShift cli tooling
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  export PATH="$HOME/bin/oc-4.10.20-macosx:$PATH"
-fi
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#   export PATH="$HOME/bin/oc-4.10.20-macosx:$PATH"
+# fi
 
 
+## Rancher Removed by DM, 12/02/25
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/david.meredith/.rd/bin:$PATH"
+#export PATH="/Users/david.meredith/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 

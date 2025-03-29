@@ -146,9 +146,19 @@ nnoremap <s-TAB> :action PreviousTab<CR>
 nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
 nnoremap <leader>T :action Terminal.OpenInTerminal<CR>
 " To minimize the terminal, Esc so focus is on buffer tab then '<leader>wm' to maximize buffer
-" TODO: Increase/decrease split/term/project width/height
-"map <c-space>k :action DecrementWindowHeight<CR> "this affects whole IJ window
-"map <c-space>j :action IncrementWindowHeight<CR>
+
+" Split resizing
+nmap <C-w>\| <Action>(MaximizeEditorInSplit)
+" even though it's the same command map it for muscle memory
+nmap <C-w>= <Action>(MaximizeEditorInSplit)
+"nmap <C-w><Down> <Action>(StretchSplitToBottom)
+"nmap <C-w><Left> <Action>(StretchSplitToLeft)
+"nmap <C-w><Right> <Action>(StretchSplitToRight)
+"nmap <C-w><Up> <Action>(StretchSplitToTop)
+nmap <Leader>h <Action>(StretchSplitToLeft)
+nmap <Leader>l <Action>(StretchSplitToRight)
+nmap <Leader>k <Action>(StretchSplitToTop)
+nmap <Leader>j <Action>(StretchSplitToBottom)
 
 " Close tab/window
 nnoremap <Leader>q :action CloseContent<CR>
@@ -199,8 +209,8 @@ let g:WhichKeyDesc_codeAction = "<leader>ca Code Action / Refactoring Quick List
 " Refactorings
 nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
 nnoremap <Leader>= :action ReformatCode<CR>
-nnoremap <leader>l :action RecentLocations<CR>
-nnoremap <leader>h :action LocalHistory.ShowHistory<CR>
+"nnoremap <leader>l :action RecentLocations<CR>
+"nnoremap <leader>h :action LocalHistory.ShowHistory<CR>
 "nmap <leader>s <action>(QuickChangeScheme)
 "nnoremap <leader>o :action OptimizeImports<CR>
 
