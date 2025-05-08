@@ -148,7 +148,7 @@ nnoremap <leader>T :action Terminal.OpenInTerminal<CR>
 " To minimize the terminal, Esc so focus is on buffer tab then '<leader>wm' to maximize buffer
 
 " Split resizing
-nmap <C-w>\| <Action>(MaximizeEditorInSplit)
+nmap <C-w>\|<Action>(MaximizeEditorInSplit)
 " even though it's the same command map it for muscle memory
 nmap <C-w>= <Action>(MaximizeEditorInSplit)
 "nmap <C-w><Down> <Action>(StretchSplitToBottom)

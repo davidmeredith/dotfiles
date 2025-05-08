@@ -232,8 +232,8 @@ fi
 #    
 #
 # Create new virtualenv with the current pyenv py version: 
+#   $ pyenv version 
 #   $ pyenv virtualenv <new_pyenv_name>
-#   $ pyenv venv <new_pyenv_name>
 #
 # Actviate and Deactivate virtualenv manually:
 #    $ pyenv activate <virtualenv_name>
