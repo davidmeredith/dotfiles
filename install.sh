@@ -102,18 +102,37 @@ fi
 
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 
+##Detect operating system
+#os_type=$(uname -s)
+#if [[ "$os_type" != "Linux" ]]; then
+#    echo "This script is intended for Linux systems only."
+#    exit 1
+#fi
+
+## Detect system architecture
+#arch=$(uname -m)
+## Set variable based on architecture
+#if [[ "$arch" == "x86_64" || "$arch" == "i386" || "$arch" == "i686" ]]; then
+#    arch_type="x86"
+#elif [[ "$arch" == "armv7l" || "$arch" == "aarch64" ]]; then
+#    arch_type="arm"
+#else
+#    arch_type="unknown"
+#fi
+
 # Ubuntu via apt
 # distro package version of neovim is not adequate on ubuntu
 if [ -x "$(command -v apt-get)" ]; then
+	sudo apt update && sudo apt upgrade
 	sudo apt -y install build-essential unzip zip zsh libfuse2 zlib1g-dev
 	curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 	sudo apt install fzf ripgrep jq bat hexyl tmux fd-find
 	curl -s "https://get.sdkman.io" | bash
 
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-	chmod u+x nvim.appimage
-	sudo mv nvim.appimage /usr/bin/nvim
-	#nvim.appimage
+	# Nvim
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+	sudo rm -rf /opt/nvim
+	sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 
 	# lazygit
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')

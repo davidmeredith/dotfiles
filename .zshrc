@@ -20,7 +20,34 @@ setopt HIST_IGNORE_ALL_DUPS
 #
 
 # Set zsh VI mode - emacs (`-e`) or vi (`-v`)
-#bindkey -v
+bindkey -v
+
+# Set cursor support for block and beam 
+# https://superuser.com/questions/685005/tmux-in-zsh-with-vi-mode-toggle-cursor-shape-between-normal-and-insert-mode 
+export KEYTIMEOUT=1
+# Change cursor with support for inside/outside tmux
+function _set_cursor() {
+    if [[ $TMUX = '' ]]; then
+      echo -ne $1
+    else
+      echo -ne "\ePtmux;\e\e$1\e\\"
+    fi
+}
+function _set_block_cursor() { _set_cursor '\e[2 q' }
+function _set_beam_cursor() { _set_cursor '\e[6 q' }
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+      _set_block_cursor
+  else
+      _set_beam_cursor
+  fi
+}
+zle -N zle-keymap-select
+# ensure beam cursor when starting new terminal
+precmd_functions+=(_set_beam_cursor) #
+# ensure insert mode and beam cursor when exiting vim
+zle-line-init() { zle -K viins; _set_beam_cursor }
+
 
 # Prompt for spelling correction of commands.
 #setopt CORRECT
@@ -142,6 +169,7 @@ unset key
 # Custom zsh config
 # -----------------
 
+os_type=$(uname -s)
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 # Java Testcontainers lib can use podman instead of docker, but you need 
@@ -330,10 +358,11 @@ function gunwipall() {
 
 # Open chrome tabs from CLI to simplify following example:
 # open --new -a "Google Chrome" --args "duckduckgo.com"
+# Example:
+# chrome_open_tab /Users/david.meredith/vcs/java/vadash/README.md
 chrome_open_tab() {
   open --new -a "Google Chrome" --args $@
 }
-
 chrome_open_window() {
   open --new -a "Google Chrome" --args --new-window $@
 }
@@ -363,3 +392,11 @@ chrome_open_window() {
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
+# Configure nvim & nvm on Linux
+if [[ "$os_type" != "Linux" ]]; then
+  export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
