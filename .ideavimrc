@@ -1,15 +1,34 @@
 " For ideavim supported plugins see:
 "https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md"
+"
+" Open/Reload .ideavimrc
+" ======================
 " Use the :action IdeaVim.ReloadVimRc.reload command to reload your config file
+" I've added the following remaps too in the file below, note the backslash isn't
+" for escaping here, it is the keymap
+"   nnoremap \e :e ~/.ideavimrc<CR>
+"   nnoremap \r :action IdeaVim.ReloadVimRc.reload<CR>
 
-" To find action ids, double shift, then search for 'track action IDs'
-"https://github.com/JetBrains/ideavim/tree/master?tab=readme-ov-file#finding-action-ids
-" or search for keymap pattern (Eg :actionlist extract, :actionlist <C-D)
+" To find action ids
+" ======================
+" - Double shift, then search for 'track action IDs'
+"   https://github.com/JetBrains/ideavim/tree/master?tab=readme-ov-file#finding-action-ids
+" - Or search for keymap pattern (Eg :actionlist extract, :actionlist <C-D)
 
+" Nice article:
 "https://towardsdatascience.com/the-essential-ideavim-remaps-291d4cd3971b
 
 " sourcing my .vimrc seems to cause too many conflicts:
 "source ~/.vimrc
+
+
+" Triggering WhichKey and Scrolling the Whichkey popup dialog
+" ===========================================================
+" There doesn't seem to be an action you can use to to trigger whichkey at the 'global/root' level, so to see which keys
+" are available 'from the root', you still need to know the first char in the keymap e.g. exactly like with the leader.
+" From the leader or non-leader char, subsequent chars in the keymap are then shown in the popup.
+" Also note that the whichkey popup dialog often truncates at the bottom, and it seems you can only use the mouse
+" to scroll to see keymaps truncated at the bottom.
 
 """ Map leader to space ---------------------
 let mapleader=" "
@@ -38,7 +57,7 @@ Plug 'vim-scripts/argtextobj.vim'
 "map mp <A-p>
 
 "" NERDTree plugin - emulates NERDTree
-" Basic commands:
+" Basic commands (when focus is in NERDTree):
 "   <leader>t      Open NERDTree (mapped below)
 "   o or Enter     Open files, directories, bookmarks
 "   go             Open selected, but leave cursor in the NERDTree
@@ -53,13 +72,17 @@ Plug 'vim-scripts/argtextobj.vim'
 "   m              Display the NERDTree menu (e.g. for new file, dir etc)
 Plug 'preservim/nerdtree'
 "map <c-n> :NERDTree<CR>
-map <leader>t :NERDTreeToggle<CR>
-"map <leader>t :NERDTree<CR>
-" to exit nerdtree: 'q'
+"map <leader>t :NERDTreeToggle<CR>
+map <leader>t :NERDTree<CR>
+" to exit nerdtree but leave the project structure window open: 'q'
+" to exit nerdtree and close the nerdtree window: 'Shift Esc'
 " to jump from nerdtree back to editor pane: 'Esc'
 
+" Show register contents in popup window, use " in normal mode, Ctrl-R in insert mode
+set peekaboo
 set which-key
 set notimeout
+set functiontextobj
 "set multiple-cursors
 "set argtextobj
 "set easymotion
@@ -73,7 +96,7 @@ set hls
 set so=5
 set incsearch
 set ignorecase
-set smartcase
+s smartcase
 " set number
 set nu
 "set relativenumber
@@ -94,7 +117,12 @@ set clipboard+=unnamed
 set clipboard+=ideaput
 set scrolloff=5
 
+" By default Which-Key will only display key mappings which are defined in the .ideavimrc file.
+" If you wish it can also display default VIM actions like gg, zz, zt, <C-w>k, etc. in the popup.
+" For this you need to set the following variable within your .ideavimrc:
 let g:WhichKey_ShowVimActions = "true"
+" If you wish you can also add custom descriptions for VIM Actions the same way as for other key mappings:
+let g:WhichKeyDesc_goto_top = "gg goto first line"
 
 nnoremap \e :e ~/.ideavimrc<CR>
 nnoremap \r :action IdeaVim.ReloadVimRc.reload<CR>
@@ -113,24 +141,33 @@ nnoremap \r :action IdeaVim.ReloadVimRc.reload<CR>
 "map <leader>b <Action>(ToggleLineBreakpoint)
 "map <leader>o <Action>(FileStructurePopup)
 
+" Copilot chatwindow window focus
+" 'Esc' to move focus back to editor
+" 'Shift Esc' to close
+"map <leader>a <Action>(copilot.showCompletions)
+"map <leader>a <Action>(ActivateCopilotToolWindow)
+map <leader>aa <Action>(ActivateAIAssistantToolWindow)
+let g:WhichKeyDesc_gotoCopilot = "<leader>a Goto Copilot window"
+
 "map <leader>t <Action>(SelectInProjectView)
-map <leader>a <Action>(Annotate)
+"map <leader>a <Action>(Annotate)
 "map <S-Space> <Action>(GotoNextError)
 map <leader>o <Action>(FileStructurePopup)
-
 nmap <leader>i <Action>(Generate)
 "nnoremap <leader><leader> <C-Tab>
 
 map <leader>\| <Action>(SplitVertically)
 map <leader>- <Action>(SplitHorizontally)
 map <leader>" <Action>(SplitHorizontally)
-let gWhichKeyDesc_window_vsplit = "<leader>| split vertical"
+let g:WhichKeyDesc_window_vsplit = "<leader>| split vertical"
 let g:WhichKeyDesc_window_hsplit = "<leader>- split horizontal"
 let g:WhichKeyDesc_window_hsplit = "<leader>\" split horizontal"
 "sethandler <c-m> a:vim
 "nnoremap <c-m> :action MoveEditorToOppositeTabGroup<CR>
 
-" Simulate Chris Toomey's navigation between windows and splits using same remaps
+" Simulate Chris Toomey's navigation between splits using same remaps
+" (NOTE: doesn't work for navigation between different windows w.g. project structure, terminal windows, Run window etc,
+" it only works for splits in main code window)
 sethandler <c-j> a:vim
 sethandler <c-k> a:vim
 sethandler <c-h> a:vim
@@ -143,14 +180,26 @@ nnoremap <TAB> :action NextTab<CR>
 nnoremap <s-TAB> :action PreviousTab<CR>
 
 
+" Terminal
 nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
-nnoremap <leader>T :action Terminal.OpenInTerminal<CR>
-" To minimize the terminal, Esc so focus is on buffer tab then '<leader>wm' to maximize buffer
+"let g:WhichKeyDesc_terminalWindow = "<leader>T for terminal"
+" To maximise the terminal:
+"    Shortcut: Shift Cmd ' (single quote)
+let g:WhichKeyDesc_window_terminal = "Ctrl-t show terminal window"
+let g:WhichKeyDesc_window_maximizeOrRestore = "Shift-Cmd-' (that is a single-quote) to maximise/restore window size"
+" To minimize the terminal:
+"    Shortcut: Shift Esc
+"    Or press 'Esc' to move focus away from terminal onto a buffer tab then '<leader>wm' to maximize buffer window
+let g:WhichKeyDesc_window_minimize = "Shift-Esc to minimize window"
 
 " Split resizing
-nmap <C-w>\|<Action>(MaximizeEditorInSplit)
+" (resizing for the active pane, ie the pane on which the cursor is active):
+" (doesn't work for resize between project structure and terminal etc, only splits in main code tab)
+" <C-w> Represents the key combination Ctrl+W, which is traditionally used in Vim for window/split operations
+nmap <C-w>\| <Action>(MaximizeEditorInSplit)
 " even though it's the same command map it for muscle memory
 nmap <C-w>= <Action>(MaximizeEditorInSplit)
+"
 "nmap <C-w><Down> <Action>(StretchSplitToBottom)
 "nmap <C-w><Left> <Action>(StretchSplitToLeft)
 "nmap <C-w><Right> <Action>(StretchSplitToRight)
@@ -196,12 +245,13 @@ map K <Action>(ShowHoverInfo)
 let g:WhichKeyDesc_HoverInfo = "K Show Hover Info"
 let g:WhichKeyDesc_codeprefix = "<leader>c Code prefix"
 map <leader>ci <Action>(QuickImplementations)
+" Show context actions - the yellow bulb
 map <leader>cd <Action>(ShowIntentionActions)
 nmap <leader>i <action>(Generate)
 map <leader>cr <Action>(RenameElement)
 nnoremap <leader>ca :action Refactorings.QuickListPopupAction<CR>
 let g:WhichKeyDesc_quickImpls = "<leader>ci Show Implementations"
-let g:WhichKeyDesc_codeDiagnostics = "<leader>cd Code Diagnostics (IntentionActions)"
+let g:WhichKeyDesc_codeDiagnostics = "<leader>cd Code Diagnostics (Context Actions yellow bubble)"
 let g:WhichKeyDesc_rename = "<leader>cr Code rename"
 let g:WhichKeyDesc_generate = "<leader>i Generate"
 let g:WhichKeyDesc_codeAction = "<leader>ca Code Action / Refactoring Quick List"
@@ -223,10 +273,10 @@ nmap gR <Action>(FindUsages)
 nmap gr <Action>(ShowUsages)
 nmap gD <Action>(GotoDeclaration)
 nmap gI <Action>(GotoImplementation)
-let g:WhichKeyDesc_goUsages = "gr Goto Refs/FindUsages Inline"
-let g:WhichKeyDesc_goUsages = "gR Goto Refs/Usages Pane"
+let g:WhichKeyDesc_goUsagesInline = "gr Goto Usages / Refs InLine"
+let g:WhichKeyDesc_goUsagesPane = "gR Goto Usages / Refs Pane"
 let g:WhichKeyDesc_goDeclarations = "gD Goto Declarations"
-let g:WhichKeyDesc_goImpl = "gI Goto Implementations"
+let g:WhichKeyDesc_goImplementations = "gI Goto Implementations"
 
 
 " Navigate next/previous
@@ -262,7 +312,8 @@ let g:WhichKeyDesc_gitShowChangeHunk = "<leader>gp Git Preview Hunk"
 sethandler <C-C> n-v:ide i:vim
 
 inoremap jj <Esc>
-" clean delete
+" clean delete, best ever shortcut - delete visual selection into blackhole register
+" without over-writing default register
 vnoremap <leader>d "_d
 " clean delete and paste
 vnoremap <leader>p "_dP

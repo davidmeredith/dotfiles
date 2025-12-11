@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =8
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/Users/david.meredith/vcs'
 let g:netrw_dirhist_8='/Users/davidmeredith/OneDrive - Science and Technology Facilities Council/Documents/work/tutorials'
 let g:netrw_dirhist_7='/Users/davidmeredith/OneDrive - Science and Technology Facilities Council/Documents/work'
 let g:netrw_dirhist_6='/Users/davidmeredith/OneDrive - Science and Technology Facilities Council/Documents/work/hartree'
@@ -9,4 +10,3 @@ let g:netrw_dirhist_3='/Users/davidmeredith/OneDrive - Science and Technology Fa
 let g:netrw_dirhist_2='/Users/davidmeredith'
 let g:netrw_dirhist_1='/Users/davidmeredith/Desktop'
 let g:netrw_dirhist_0='/Users/davidmeredith/OneDrive - Science and Technology Facilities Council/Documents/work/management/APR/APRs/2021aprReviews'
-let g:netrw_dirhist_9='/Users/davidmeredith/OneDrive - Science and Technology Facilities Council/Documents/work/management/APR/APRs'

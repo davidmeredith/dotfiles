@@ -1,0 +1,7 @@
+# The configuration can be reloaded at runtime by pressing ctrl+shift+, (Linux) or cmd+shift+, (macOS)
+# To list defaults on cli:  ghostty +list-keybinds --default
+keybind = opt+cmd+right=next_tab
+keybind = opt+cmd+left=previous_tab
+keybind = ctrl+cmd+left=move_tab:-1
+keybind = ctrl+cmd+right=move_tab:1
+font-family = "JetBrains Mono"

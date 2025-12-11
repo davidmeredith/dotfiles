@@ -172,6 +172,7 @@ unset key
 os_type=$(uname -s)
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+export EDITOR=nvim
 # Java Testcontainers lib can use podman instead of docker, but you need 
 # to disable RYUK which is podman specific (is used to clean up containers)
 export TESTCONTAINERS_RYUK_DISABLED="true"
@@ -400,3 +401,24 @@ if [[ "$os_type" != "Linux" ]]; then
 
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
+
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/david.meredith/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+# Add JBang to environment
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
+eval "$(zoxide init zsh)"
