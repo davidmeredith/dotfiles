@@ -421,4 +421,6 @@ function y() {
 # Add JBang to environment
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
-eval "$(zoxide init zsh)"
+
+# Not using zoxide any more
+#eval "$(zoxide init zsh)"
