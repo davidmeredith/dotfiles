@@ -4,13 +4,13 @@ echo "Check zsh is the default shell first before running"
 # see: https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH
 
 create_symlink() {
-	echo "... $1"
+  echo "... $1"
 
-	if [ $# -eq 2 ]; then
-		ln -s -f -F ~/.dotfiles/"$1" ~/"$2"
-	else
-		ln -s -f -F ~/.dotfiles/"$1" ~/"$1"
-	fi
+  if [ $# -eq 2 ]; then
+    ln -s -f -F ~/.dotfiles/"$1" ~/"$2"
+  else
+    ln -s -f -F ~/.dotfiles/"$1" ~/"$1"
+  fi
 }
 
 echo "Creating configuration symlinks..."
@@ -80,29 +80,30 @@ echo "Installing tools..."
 
 # Mac via brew
 if [[ "$OSTYPE" == "darwin"* ]]; then
-	brew install --cask ghostty
-	brew install \
-		neovim \
-		eza \
-		cheat \
-		starship \
-		jq \
-		bat \
-		fzf \
-		hexyl \
-		tmux \
-		ripgrep \
-		hyperfine \
-		git-delta \
-		lazygit \
-		go-task/tap/go-task \
-		tealdeer
-	#fish \
+  #brew install --cask ghostty
+  brew install \
+    node \
+    neovim \
+    eza \
+    cheat \
+    starship \
+    jq \
+    bat \
+    fzf \
+    hexyl \
+    tmux \
+    ripgrep \
+    hyperfine \
+    git-delta \
+    lazygit \
+    go-task/tap/go-task \
+    tealdeer
+  #fish \
 
-	"$(brew --prefix)"/opt/fzf/install
+  "$(brew --prefix)"/opt/fzf/install
 
-	#zim
-	curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+  #zim
+  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 fi
 
 #sh -c "$(curl -fsSL https://starship.rs/install.sh)"
@@ -117,54 +118,54 @@ fi
 ### Detect system architecture
 arch=$(uname -m)
 if [[ "$arch" == "x86_64" || "$arch" == "i386" || "$arch" == "i686" ]]; then
-	arch_type="x86"
+  arch_type="x86"
 elif [[ "$arch" == "armv7l" || "$arch" == "aarch64" ]]; then
-	arch_type="arm"
+  arch_type="arm"
 else
-	arch_type="unknown"
+  arch_type="unknown"
 fi
 
 # Ubuntu via apt
 # distro package version of neovim is not adequate on ubuntu
 if [ -x "$(command -v apt-get)" ]; then
-	sudo apt update && sudo apt upgrade
-	sudo apt -y install build-essential unzip zip zsh libfuse2 zlib1g-dev
-	curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-	sudo apt install fzf ripgrep jq bat hexyl tmux fd-find
-	curl -s "https://get.sdkman.io" | bash
+  sudo apt update && sudo apt upgrade
+  sudo apt -y install build-essential unzip zip zsh libfuse2 zlib1g-dev
+  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+  sudo apt install fzf ripgrep jq bat hexyl tmux fd-find
+  curl -s "https://get.sdkman.io" | bash
 
-	# Download and install nvm:
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-	# in lieu of restarting the shell, source '.' the newly created nvm.sh
-	\. "$HOME/.nvm/nvm.sh"
-	# Download and install Node.js:
-	nvm install 22
-	# Verify the Node.js version:
-	#node -v
-	#nvm current
+  # Download and install nvm:
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  # in lieu of restarting the shell, source '.' the newly created nvm.sh
+  \. "$HOME/.nvm/nvm.sh"
+  # Download and install Node.js:
+  nvm install 22
+  # Verify the Node.js version:
+  #node -v
+  #nvm current
 
-	if [[ "$arch_type" == "x86" ]]; then
-		# Nvim
-		curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-		sudo rm -rf /opt/nvim
-		sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+  if [[ "$arch_type" == "x86" ]]; then
+    # Nvim
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+    sudo rm -rf /opt/nvim
+    sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 
-		# lazygit
-		LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-		curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-		tar xf lazygit.tar.gz lazygit
-		sudo install lazygit /usr/local/bin
-		rm lazygit.tar.gz lazygit
+    # lazygit
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit /usr/local/bin
+    rm lazygit.tar.gz lazygit
 
-	else
-		echo "WARNING: Not x86 arch - You likey need to install Nvim and lazygit"
-	fi
+  else
+    echo "WARNING: Not x86 arch - You likey need to install Nvim and lazygit"
+  fi
 
-	sudo snap install dust
+  sudo snap install dust
 
-	# Change shell to zsh
-	# chsh might not work (had issues on ubuntu), so change the shell to /bin/zsh in /etc/passwd
-	sudo chsh -s "$(which zsh)"
+  # Change shell to zsh
+  # chsh might not work (had issues on ubuntu), so change the shell to /bin/zsh in /etc/passwd
+  sudo chsh -s "$(which zsh)"
 fi
 
 # Vim-pane & tmux-split integration
@@ -194,7 +195,7 @@ echo "Required actions:"
 echo "   - Install tmux plugins with 'tmux-prefix + I' (capital i, as in Install, default tmux prefix is Ctrl-b)."
 echo "   - Install vim plugins within vim with :Lazy"
 if [ -x "$(command -v apt-get)" ]; then
-	echo "Shell is:  $SHELL"
-	echo "IF above isn't /bin/zsh, update your default shell: 'sudo /etc/passwd' and change to /bin/zsh"
+  echo "Shell is:  $SHELL"
+  echo "IF above isn't /bin/zsh, update your default shell: 'sudo /etc/passwd' and change to /bin/zsh"
 fi
 echo "Finished. Restart your shell for changes to take effect."
