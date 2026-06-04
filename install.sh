@@ -83,6 +83,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   #brew install --cask ghostty
   brew install \
     node \
+    htop \
+    go \
     neovim \
     eza \
     cheat \
