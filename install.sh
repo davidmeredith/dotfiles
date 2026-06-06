@@ -29,6 +29,8 @@ mkdir -p "$HOME/.config/cheat"
 ln -s ~/.dotfiles/cheat/conf.yml ~/.config/cheat/conf.yml
 
 # ssh
+mkdir -p "$HOME/.ssh"
+# link the ssh config file, no secrets there
 ln -s -f -F ~/.dotfiles/.ssh/config ~/.ssh/config
 
 # zsh
