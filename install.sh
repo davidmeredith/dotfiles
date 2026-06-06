@@ -28,6 +28,9 @@ mkdir -p "$HOME/.config/nvim"
 mkdir -p "$HOME/.config/cheat"
 ln -s ~/.dotfiles/cheat/conf.yml ~/.config/cheat/conf.yml
 
+# ssh
+ln -s -f -F ~/.dotfiles/.ssh/config ~/.ssh/config
+
 # zsh
 create_symlink .zshrc
 create_symlink .zprofile
