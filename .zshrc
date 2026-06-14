@@ -418,6 +418,75 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+
+# Interactive fuzzy find file by NAME
+function ff() {
+  rg --files "${1:-.}" | fzf --preview 'bat --color=always {}' | xargs -r ${EDITOR:-vim}
+}
+
+# Interactive  fuzzy find by file CONTENTS, open at matching line
+function fif() {
+  local result
+  result=$(rg --line-number --no-heading --color=always "${1:-}" \
+    | fzf --ansi --delimiter : \
+          --preview 'bat --style=numbers --color=always --highlight-line {2} {1}' \
+          --preview-window 'right:60%:+{2}-5')
+  [ -n "$result" ] && vim "+$(echo "$result" | cut -d: -f2)" "$(echo "$result" | cut -d: -f1)"
+}
+
+
+function fsearch() {
+  local case_flag="--smart-case"
+  local glob_flag=""
+
+  # Check if the first argument is the case-insensitive flag
+  if [[ "$1" == "-i" ]]; then
+    case_flag="--ignore-case"
+    glob_flag="--glob-case-insensitive"
+    shift # Remove -i from the argument list
+  fi
+
+  # Help documentation
+  if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: fsearch [-i] <file_name_pattern> [content_search_term]"
+    echo "Example: fsearch \"config\" \"database\""
+    return 0
+  fi
+
+  local file_pattern="$1"
+  local content_term="${2:-}"
+  local glob_pattern="*${file_pattern}*"
+  local selection=""
+
+  # If only file name is provided
+  if [[ -z "$content_term" ]]; then
+    selection=$(rg --files $glob_flag --glob "$glob_pattern" 2>/dev/null | fzf \
+      --preview 'bat --color=always --style=numbers {} 2>/dev/null || head -n 100 {}')
+    
+    # Open in vim if a selection was made
+    if [[ -n "$selection" ]]; then
+      vim "$selection"
+    fi
+
+  else
+    # If both file pattern and content search term are provided
+    selection=$(rg --column --line-number --no-heading --color=always $case_flag $glob_flag \
+       --glob "$glob_pattern" "$content_term" 2>/dev/null | fzf --ansi \
+       --delimiter : \
+       --preview 'bat --color=always --style=numbers --highlight-line {2} {1} 2>/dev/null || head -n 100 {1}' \
+       --preview-window 'right:60%:+{2}-10')
+
+    # Open in vim at the specific line number if a selection was made
+    if [[ -n "$selection" ]]; then
+      # fzf returns "filename:line:column:text"
+      # We split it by ":" to get the filename and line number
+      local file=$(echo "$selection" | cut -d: -f1)
+      local line=$(echo "$selection" | cut -d: -f2)
+      vim +"$line" "$file"
+    fi
+  fi
+}
+
 # Add JBang to environment
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
