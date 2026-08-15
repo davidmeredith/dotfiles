@@ -403,10 +403,11 @@ if [[ "$os_type" != "Linux" ]]; then
 fi
 
 
+# DM: temporarily disabled, will do a fresh install 
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/david.meredith/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
+# fpath=(/Users/david.meredith/.docker/completions $fpath)
+# autoload -Uz compinit
+# compinit
 # End of Docker CLI completions
 
 
