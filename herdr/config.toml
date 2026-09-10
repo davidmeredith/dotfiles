@@ -101,13 +101,10 @@ new_tab = "prefix+c"
 ## Simulate christoomey/vim-tmux-navigator - move between panes with ctrl+h/j/k/l the same as vim panes 
 ## no prefix needed. (prefix also had prefix h/j/k/l via bind-key select-pane)
 # focus_pane_left = "prefix+h"
-focus_pane_left = "ctrl+h"
 # focus_pane_down = "prefix+j"
-focus_pane_down = "ctrl+j"
 # focus_pane_up = "prefix+k"
-focus_pane_up = "ctrl+k"
 # focus_pane_right = "prefix+l"
-focus_pane_right = "ctrl+l"
+
 # cycle_pane_next = "prefix+tab"
 # cycle_pane_previous = "prefix+shift+tab"
 # last_pane = ""          # optional, unset by default; bind e.g. "prefix+tab" for global back-and-forth
@@ -338,3 +335,31 @@ pane_history = false
 # Maximum scrollback buffer size in bytes retained per pane terminal.
 # Matches Ghostty's default scrollback-limit behavior.
 # scrollback_limit_bytes = 10000000
+
+
+#focus_pane_left = "ctrl+h"
+#focus_pane_down = "ctrl+j"
+#focus_pane_up = "ctrl+k"
+#focus_pane_right = "ctrl+l"
+
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "herdr-nvim-nav.left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "herdr-nvim-nav.down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "herdr-nvim-nav.up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "herdr-nvim-nav.right"
+
+
