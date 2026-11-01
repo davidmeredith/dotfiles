@@ -26,7 +26,7 @@ onboarding = false
 # red = "#ff6188"
 # green = "#a6e3a1"
 
-name = "catppuccin"
+name = "gruvbox"
 auto_switch = false
 [terminal]
 # Executable used for new interactive panes.
@@ -69,17 +69,24 @@ prefix = "ctrl+space"
 # Prefix-mode actions
 # help = "prefix+?"
 # settings = "prefix+s"
+settings = "ctrl+s"
 # detach = "prefix+q"
 # reload_config = "prefix+shift+r"
 # open_notification_target = "prefix+o"
 workspace_picker = "prefix+w"
 # goto = "prefix+g"
- goto = "ctrl+s"
+# goto = "ctrl+s"
+
+# custom below to match tmux: 
+goto = "prefix+s"
+
 # new_workspace = "prefix+shift+n"
 # new_worktree = "prefix+shift+g"
 # open_worktree = ""    # optional, unset by default
 # remove_worktree = ""  # optional, unset by default; opens confirmation
 # rename_workspace = "prefix+shift+w"
+# custom below to match tmux: 
+rename_workspace = "prefix+$"
 # close_workspace = "prefix+shift+d"
 # previous_workspace = "" # optional, unset by default
 # next_workspace = ""     # optional, unset by default
@@ -90,13 +97,15 @@ workspace_picker = "prefix+w"
 # new_tab = "prefix+c"
 new_tab = "prefix+c"
 # rename_tab = "prefix+shift+t"
+# custom below to match tmux: 
+rename_tab = "prefix+,"
 # previous_tab = "prefix+p"
 # next_tab = "prefix+n"
 # switch_tab = "prefix+1..9"
 # switch_workspace = ""   # optional indexed binding, e.g. "prefix+shift+1..9"
 # close_tab = "prefix+shift+x"
 # rename_pane = "prefix+shift+p"
-# edit_scrollback = "prefix+e"
+edit_scrollback = "prefix+e"
 
 ## Simulate christoomey/vim-tmux-navigator - move between panes with ctrl+h/j/k/l the same as vim panes 
 ## no prefix needed. (prefix also had prefix h/j/k/l via bind-key select-pane)
@@ -109,9 +118,9 @@ new_tab = "prefix+c"
 # cycle_pane_previous = "prefix+shift+tab"
 # last_pane = ""          # optional, unset by default; bind e.g. "prefix+tab" for global back-and-forth
 # split_vertical = "prefix+v"
- split_vertical = "prefix+%"
+split_vertical = "prefix+%"
 # split_horizontal = "prefix+minus"
- split_horizontal = 'prefix+"'
+split_horizontal = 'prefix+"'
 # close_pane = "prefix+x"
 # zoom = "prefix+z"       # legacy alias: fullscreen
 # resize_mode = "prefix+r"
@@ -337,7 +346,8 @@ pane_history = false
 # scrollback_limit_bytes = 10000000
 
 
-#focus_pane_left = "ctrl+h"
+## Simulate christoomey/vim-tmux-navigator - move between panes with ctrl+h/j/k/l the same as vim panes 
+#focus_pane_left = "ctrl+h" 
 #focus_pane_down = "ctrl+j"
 #focus_pane_up = "ctrl+k"
 #focus_pane_right = "ctrl+l"
@@ -361,5 +371,3 @@ command = "herdr-nvim-nav.up"
 key = "ctrl+l"
 type = "plugin_action"
 command = "herdr-nvim-nav.right"
-
-

@@ -1,3 +1,7 @@
+
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
 # Start configuration added by Zim install {{{
 #
 # User configuration sourced by interactive shells
@@ -492,5 +496,13 @@ function fsearch() {
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
 
-# Not using zoxide any more
-#eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+eval "$(tv init zsh)"
+
+# Needed for kiro install  
+PATH="$HOME/.local/bin:$PATH"
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

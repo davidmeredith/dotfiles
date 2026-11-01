@@ -5,3 +5,5 @@ keybind = opt+cmd+left=previous_tab
 keybind = ctrl+cmd+left=move_tab:-1
 keybind = ctrl+cmd+right=move_tab:1
 font-family = "JetBrains Mono"
+clipboard-read = allow
+clipboard-write = allow

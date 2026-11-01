@@ -23,6 +23,10 @@ mkdir -p "$HOME/.config/nvim"
 #ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
 #ln -s ~/.dotfiles/nvim/init.lua ~/.config/nvim/init.lua
 
+# Starship
+mkdir -p "$HOME/.config/starship"
+ln -s ~/.dotfiles/starship/starship.toml ~/.config/starship.toml
+
 # Cheat
 # TODO add customisations to cheat
 mkdir -p "$HOME/.config/cheat"
@@ -54,6 +58,10 @@ create_symlink .ideavimrc
 # ghostty
 mkdir -p "$HOME/.config/ghostty"
 ln -s ~/.dotfiles/ghostty/config ~/.config/ghostty/config
+
+# herdr
+mkdir -p "$HOME/.config/herdr/"
+ln -s ~/.dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 
 # fish (don't use anymore)
 #mv ~/.config/fish ~/.config/fish_backup 2> /dev/null || true
@@ -97,6 +105,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     jq \
     bat \
     fzf \
+    herdr \
     hexyl \
     tmux \
     ripgrep \
